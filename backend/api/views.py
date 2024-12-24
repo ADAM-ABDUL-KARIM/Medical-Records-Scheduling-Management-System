@@ -1,17 +1,15 @@
 from django.shortcuts import render
 from  django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer,NoteSerializer
+from .serializers import UserSerializer,NoteSerializer,ProfileSerializer
 from rest_framework.permissions import IsAuthenticated,AllowAny
-from .models import Note
+from .models import Note,Profile
 
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
-
-    
     def get_queryset(self):
         # gives us the user that wrote it
         user = self.request.user
@@ -48,5 +46,13 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     # anyone not authenitcted can create a new user
     permission_classes = [AllowAny]
+
+class ProfileView(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes=[IsAuthenticated]
+    
+    def get_object(self):
+        return self.request.user.profile
     
     

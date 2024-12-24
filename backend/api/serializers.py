@@ -3,7 +3,14 @@
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Note
+from .models import Note,Role,Profile
+
+
+class RoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Role
+        fields =['id','role_name']
+        
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,7 +27,12 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
     
-    
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    role = RoleSerializer()
+    class Meta:
+        model = Profile
+        fields =['user','role']
     
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
