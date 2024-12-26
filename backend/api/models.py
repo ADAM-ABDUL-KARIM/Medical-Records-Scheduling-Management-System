@@ -74,7 +74,7 @@ class AdminAppointment(models.Model):
 
 class Availability(models.Model):
     availability_id = models.AutoField(primary_key=True)
-    availability_date = models.DateField()
+    availability_date = models.DateTimeField()
     end_time = models.TimeField()
 
     def __str__(self):
@@ -90,7 +90,7 @@ class HealthCareProfessionalAvailability(models.Model):
 
 class Diagnosis(models.Model):
     diagnosis_id = models.AutoField(primary_key=True)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name="diagnosis")
     diagnosis = models.TextField()
 
     def __str__(self):
@@ -98,10 +98,10 @@ class Diagnosis(models.Model):
 
 class Note(models.Model):
     note_id = models.AutoField(primary_key=True)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name="notes")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     note_date = models.DateField()
-    added_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    added_by = models.ForeignKey(User, on_delete=models.CASCADE,default='',null=True)
     note_content = models.TextField()
 
     def __str__(self):
@@ -109,7 +109,7 @@ class Note(models.Model):
 
 class Medication(models.Model):
     medication_id = models.AutoField(primary_key=True)
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE,related_name='medication')
     medication_name = models.CharField(max_length=100)
 
     def __str__(self):
