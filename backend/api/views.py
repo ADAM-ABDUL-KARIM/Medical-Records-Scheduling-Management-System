@@ -4,7 +4,11 @@ from rest_framework import generics
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated,AllowAny
 from .models import *
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 import openpyxl
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 class PatientRetrieve (generics.ListCreateAPIView):
     serializer_class = PatientSerializer
@@ -97,14 +101,17 @@ class ProfileView(generics.RetrieveAPIView):
     
     
     
-def export_patients_excel(request):
+def export_patients_excel(request,pk):
+    
+    patient = get_object_or_404(Patient, pk=pk)
+    
     
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
-    worksheet.title  ='Patients Report Data'
+    worksheet.title  ='Patients'
     
-    columns  =['First Name','Last Name', 'Date Of Birth']
-    row_num =1 
+    columns = ['First Name','Last Name', 'Date Of Birth']
+    row_num = 1 
     
     # assigning titles for each of the header
     for col_num,column_title in enumerate(columns,1):
@@ -112,13 +119,42 @@ def export_patients_excel(request):
         cell.value = column_title
         
         # write data to worksheet
-        patients = Patient.objects.all().values_list('first_name','last_name','dob')
-        
-        for patient in patients:
-           row_num+=1
-           for col_num,cell_value in enumerate(patient,1):
-               cell = worksheet.cell(row=row_num,column=col_num)
-               cell.value = cell_value
+    patient_data = [patient.first_name, patient.last_name, patient.dob]
+    row_num += 1
+    for col_num, cell_value in enumerate(patient_data, 1):
+        cell = worksheet.cell(row=row_num, column=col_num)
+        cell.value = cell_value
                
                
         # create an HttpResponse object with the appropriate Excel Header 
+    filename= f'patient_{patient.first_name}_{patient.last_name}_{pk}.xlsx'
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    workbook.save(response)
+    return response
+
+def export_patient_pdf(request, pk):
+    
+    # Get the specific patient
+    patient = get_object_or_404(Patient,pk=pk)
+    
+    # Create a HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    filename = f'patient_{patient.first_name}_{patient.last_name}_{pk}.pdf'
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    
+     # Create the PDF object, using the response object as its "file."
+    p = canvas.Canvas(response, pagesize=letter)
+    width, height = letter
+    
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, height - 100, f"Patient Report for {patient.first_name} {patient.last_name}")
+    p.drawString(100, height - 150, f"First Name: {patient.first_name}")
+    p.drawString(100, height - 200, f"Last Name: {patient.last_name}")
+    p.drawString(100, height - 250, f"Date of Birth: {patient.dob}")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+    return response
