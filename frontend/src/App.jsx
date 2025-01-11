@@ -5,8 +5,15 @@ import Register from "./pages/Register"
 import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
-
-
+import WriteRecords from "./pages/WriteRecords"
+/**
+ * 
+ *  BrowserRouter: Wraps the application to enable routing.
+Routes: Defines a set of routes.
+Route: Defines a single route with a path and component to render.
+Navigate: Programmatically navigates to a different route.
+ProtectedRoute: Custom component to protect routes and check for authentication.
+ */
 function Logout (){
 
   localStorage.clear()
@@ -31,11 +38,13 @@ function App() {
         element={
           <ProtectedRoute>
             {/* access Home unless you an access Token */}
+       
             <Home/>
           </ProtectedRoute>
         }
         />
-
+    
+       <Route path="/WriteRecords" element={<WriteRecords />}/>
         <Route path="/login" element={<Login />}/>
         <Route path="/logout" element={<Logout />}/>
         <Route path="/register" element={<RegisterandLogout />}/>

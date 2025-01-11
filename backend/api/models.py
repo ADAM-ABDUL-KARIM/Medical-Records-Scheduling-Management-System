@@ -35,7 +35,7 @@ class HealthCareProfessional(models.Model):
 
 class Patient(models.Model):
     file_number = models.AutoField(primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     dob = models.DateField()
