@@ -24,19 +24,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['user', 'role']
 
-class NoteSerializer(serializers.ModelSerializer):
-    added_by = serializers.ReadOnlyField(source='added_by.username')
 
-    class Meta:
-        model = Note
-        fields = ["note_id", "patient", "appointment", "note_date", "added_by", "note_content"]
-        extra_kwargs = {"added_by": {"read_only": True}}
-
-    def create(self, validated_data):
-        request = self.context.get('request')
-        user = request.user if request else None
-        note = Note.objects.create(added_by=user, **validated_data)
-        return note
 
 class DiagnosisSerializer(serializers.ModelSerializer):
     class Meta:
@@ -81,13 +69,13 @@ class AdminSerializer(serializers.ModelSerializer):
 
 class HealthCareProfessionalSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-
+    
     class Meta:
         model = HealthCareProfessional
-        fields = ['id', 'user', 'first_name', 'last_name', 'specialty', 'dob']
+        fields = ['id', 'user','first_name', 'last_name', 'specialty', 'dob']
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    HealthCareProfessional= HealthCareProfessionalSerializer
+  
     class Meta:
         model = Appointment
         fields = '__all__'
@@ -112,3 +100,29 @@ class HealthCareProfessionalAvailabilitySerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthCareProfessionalAvailability
         fields = ['healthcare_professional_availability_id', 'healthcare_professional', 'availability']
+        
+        
+class NoteSerializer(serializers.ModelSerializer):
+    added_by = serializers.ReadOnlyField(source='added_by.username')
+    patient_name = serializers.SerializerMethodField()
+    appointment_details = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Note
+        fields = ["note_id", "patient_name", "appointment_details", "note_date", "added_by", "note_content", "patient", "appointment"]
+        extra_kwargs = {"added_by": {"read_only": True}}
+
+    def get_patient_name(self, obj):
+        return f"{obj.patient.first_name} {obj.patient.last_name}"
+
+    def get_appointment_details(self, obj):
+        return {
+            "appointment_datetime": obj.appointment.appointment_datetime,
+            "healthcare_professional_name": f"{obj.appointment.healthcare_professional.first_name} {obj.appointment.healthcare_professional.last_name}"
+        }
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user if request else None
+        note = Note.objects.create(added_by=user, **validated_data)
+        return note

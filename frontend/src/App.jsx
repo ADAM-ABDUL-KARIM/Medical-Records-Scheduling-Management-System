@@ -6,6 +6,7 @@ import Home from "./pages/Home"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import WriteRecords from "./pages/WriteRecords"
+import Appointments from "./pages/Appointments"
 /**
  * 
  *  BrowserRouter: Wraps the application to enable routing.
@@ -43,6 +44,8 @@ function App() {
           </ProtectedRoute>
         }
         />
+      
+      <Route path="/appointments" element={<Appointments />}/>
     
        <Route path="/WriteRecords" element={<WriteRecords />}/>
         <Route path="/login" element={<Login />}/>

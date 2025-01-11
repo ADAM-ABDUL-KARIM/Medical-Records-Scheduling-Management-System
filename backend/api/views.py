@@ -10,6 +10,16 @@ import openpyxl
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
+
+class HealthcareProfessionalRetrieve (generics.ListCreateAPIView):
+    serializer_class = HealthCareProfessionalSerializer
+    permission_classes = [AllowAny]
+    
+    def get_queryset(self):
+        return HealthCareProfessional.objects.all()
+    def perform_create(self, serializer):
+        return serializer.save()
+    
 class PatientRetrieve(generics.ListCreateAPIView):
     serializer_class = PatientSerializer
     permission_classes = [AllowAny]
