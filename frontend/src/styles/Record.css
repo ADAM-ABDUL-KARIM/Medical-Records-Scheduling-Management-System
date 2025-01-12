@@ -59,7 +59,43 @@ body {
     font-size: 0.8rem;
     margin-top: 10px;
 }
-
+.confirm-button{
+    background-color: steelblue; /* Red */
+    color: white;
+    border: none;
+    margin-right:5px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+.edit-button{
+    background-color: steelblue; /* Red */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+.save-button{
+    background-color: #4CAF50; /* Red */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+.save-button:hover {
+    background-color: #45a049; /* Darker red */
+}
+.edit-button:hover {
+    background-color: rgb(21, 78, 124); /* Darker red */
+}
 /* Button styles */
 .delete-button {
     background-color: #f44336; /* Red */
