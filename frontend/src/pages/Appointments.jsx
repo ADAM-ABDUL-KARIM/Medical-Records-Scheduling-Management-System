@@ -67,7 +67,7 @@ function Appointments () {
     };
 
     return (
-        <>
+        <div>
         <div>
         <h2>Appointments</h2>
         {
@@ -77,6 +77,7 @@ function Appointments () {
 
         }
         </div>
+        
         <h2>Set an Appointment</h2>
         <form onSubmit={createAppointment}>
             <label htmlFor="patient">Patient</label>
@@ -133,7 +134,7 @@ function Appointments () {
               <input type="submit" value="Submit"/>
 
         </form>
-        </>
+        </div>
     )
 }
 

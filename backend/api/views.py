@@ -30,6 +30,13 @@ class PatientRetrieve(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save()
+class PatientDelete (generics.DestroyAPIView):
+    serializer_class = PatientSerializer
+    permission_classes = [AllowAny]
+    
+    def get_queryset(self):
+        return Note.objects.all()
+    
 
 class AppointmentCreate(generics.ListCreateAPIView):
     serializer_class = AppointmentSerializer

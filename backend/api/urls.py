@@ -5,6 +5,7 @@ urlpatterns = [
     path("notes/",views.NoteListCreate.as_view(),name ="note-list"),
     path("notes/delete/<int:pk>/",views.NoteDelete.as_view(),name="delete-note"),
      path("patient/",views.PatientRetrieve.as_view(),),
+      path("patient/delete/<int:pk>/",views.PatientDelete.as_view(),),
      path("healthpro/",views.HealthcareProfessionalRetrieve.as_view(),),
      
      path("appointment/",views.AppointmentCreate.as_view(),),

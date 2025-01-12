@@ -1,11 +1,15 @@
 import React from "react";
 import "../styles/Note.css"
+import "../styles/Record.css"
+
 function Appointment({appointment,onDelete}) { 
 
  
-    return <div className="note-container">
-            <p className="note-title">{appointment.healthcare_professional}</p>
-            <p className="note-content">{appointment.patient}</p>
+    return <div className="rec-container">
+            <p className="rec-title"> {appointment.healthpro_details.healthcare_professional_name}</p>
+            <p className="note-title">{appointment.healthpro_details.healthcare_professional_specialty}</p>
+    
+            <p className="note-content">{appointment.patient_name}</p>
             <p className="note-content">{appointment.appointment_datetime}</p>
            
 

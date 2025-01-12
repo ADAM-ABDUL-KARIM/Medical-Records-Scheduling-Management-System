@@ -75,11 +75,27 @@ class HealthCareProfessionalSerializer(serializers.ModelSerializer):
         fields = ['id', 'user','first_name', 'last_name', 'specialty', 'dob']
 
 class AppointmentSerializer(serializers.ModelSerializer):
-  
+    patient_name = serializers.SerializerMethodField()
+    healthpro_details = serializers.SerializerMethodField()
+
     class Meta:
         model = Appointment
-        fields = '__all__'
-        
+        fields = ["appointment_id","healthcare_professional", "patient", "appointment_datetime", "healthpro_details", "patient_name"]
+
+    def get_patient_name(self, obj):
+        return f"{obj.patient.first_name} {obj.patient.last_name}"
+
+    def get_healthpro_details(self, obj):
+        return {
+            "healthcare_professional_name": f"{obj.healthcare_professional.first_name} {obj.healthcare_professional.last_name}",
+            "healthcare_professional_specialty": f"{obj.healthcare_professional.specialty}"
+        }
+
+    def create(self, validated_data):
+        appointment = Appointment.objects.create(**validated_data)
+        return appointment
+            
+            
 class AdminAppointmentSerializer(serializers.ModelSerializer):
     admin = AdminSerializer()
     appointment = AppointmentSerializer()

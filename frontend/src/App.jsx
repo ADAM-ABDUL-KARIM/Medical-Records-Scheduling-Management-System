@@ -7,6 +7,8 @@ import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/ProtectedRoute"
 import WriteRecords from "./pages/WriteRecords"
 import Appointments from "./pages/Appointments"
+import ViewPatientRecrods from "./pages/ViewPatientRecrods"
+
 /**
  * 
  *  BrowserRouter: Wraps the application to enable routing.
@@ -46,6 +48,7 @@ function App() {
         />
       
       <Route path="/appointments" element={<Appointments />}/>
+      <Route path="/viewrecords" element={<ViewPatientRecrods />}/>
     
        <Route path="/WriteRecords" element={<WriteRecords />}/>
         <Route path="/login" element={<Login />}/>
