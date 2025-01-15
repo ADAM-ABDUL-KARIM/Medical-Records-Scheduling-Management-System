@@ -8,10 +8,10 @@ urlpatterns = [
       path("patient/<int:pk>/", views.PatientUpdate.as_view()),
       path("patient/delete/<int:pk>/",views.PatientDelete.as_view(),),
      path("healthpro/",views.HealthcareProfessionalRetrieve.as_view(),),
-     
-     path("appointment/",views.AppointmentCreate.as_view(),),
+     path("availability/",views.AvailabilityView.as_view(),),
+          path("appointment/",views.AppointmentCreate.as_view(),),
      path("appointment/delete/<int:pk>/",views.AppointmentDelete.as_view(),),
-     path("availability/",views.HealthCareProfessionalAvailabilityView.as_view(),),
+
      
      path('export/patient/excel/<int:pk>/',views.export_patients_excel,name='export-patient-excel'),
      path('export/patient/pdf/<int:pk>/',views.export_patient_pdf,name='export-patient-pdf'),

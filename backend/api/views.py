@@ -100,23 +100,18 @@ class ProfileView(generics.RetrieveAPIView):
     def get_object(self):
         return self.request.user.profile
 
-class HealthCareProfessionalAvailabilityView(generics.ListCreateAPIView):
-    
-    serializer_class = HealthCareProfessionalAvailabilitySerializer
+class AvailabilityView(generics.ListCreateAPIView):
+    serializer_class = AvailabilitySerializer
     permission_classes = [AllowAny]
-    
-    def get_queryset(self):
-        return HealthCareProfessionalAvailability.objects.all()
     
     def perform_create(self, serializer):
         if serializer.is_valid():
             serializer.save()
         else:
-            print(serializer.errors) 
-            
+            print(serializer.errors)
         return super()
-            
-    
+    def get_queryset(self):
+        return Availability.objects.all()
      
 def export_patients_excel(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
