@@ -135,10 +135,18 @@ class AdminAppointmentSerializer(serializers.ModelSerializer):
         fields = ['admin_appointment_id', 'admin', 'appointment']
 
 class AvailabilitySerializer(serializers.ModelSerializer):
+    healthpro_name = serializers.SerializerMethodField()
     class Meta:
         model = Availability
-        fields = ['availability_id', 'availability_date', 'end_time','healthcare_professional']
+        fields = ['availability_id', 'availability_date', 'end_time','healthcare_professional','healthpro_name']
+    
+    def get_healthpro_name(self, obj):
+        return f"{obj.healthcare_professional.first_name} {obj.healthcare_professional.last_name}",
+         
 
+    def create(self, validated_data):
+        availability = Availability.objects.create(**validated_data)
+        return availability
 
 
         
