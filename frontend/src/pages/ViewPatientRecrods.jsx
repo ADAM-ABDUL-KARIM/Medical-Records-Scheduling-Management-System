@@ -9,37 +9,45 @@ function ViewPatientRecords() {
         getPatients();
     }, []);
 
-    const getPatients = () => {
-        api.get("/api/patient/")
-            .then((res) => res.data)
-            .then((data) => {
-                setPatients(data);
-                console.log(data);
-            })
-            .catch((err) => alert(err));
+    const getPatients = async () => {
+        try {
+            const res = await api.get("/api/patient/");
+            setPatients(res.data);
+            console.log(res.data);
+        } catch (err) {
+            alert(err);
+        }
     };
 
-    const deletePatient = (id) => {
-        api.delete(`/api/patient/delete/${id}/`)
-            .then((res) => {
-                if (res.status === 204) alert("Patient Deleted");
-                else alert("Failed to delete Patient");
+    const deletePatient = async (id) => {
+        try {
+            const res = await api.delete(`/api/patient/delete/${id}/`);
+            if (res.status === 204) {
+                alert("Patient Deleted");
                 getPatients();
-            })
-            .catch((error) => alert(error));
+            } else {
+                alert("Failed to delete Patient");
+            }
+        } catch (error) {
+            alert(error);
+        }
     };
 
-    const savePatient = (updatedPatient) => {
-        api.put(`/api/patient/${updatedPatient.file_number}/`, updatedPatient)
-            .then((res) => {
-                if (res.status === 200) {
-                    alert("Patient Updated");
-                    getPatients();
-                } else {
-                    alert("Failed to update Patient");
-                }
-            })
-            .catch((error) => alert(error));
+    const savePatient = async (updatedPatient) => {
+        try {
+            // Exclude the user field from the update request
+            const { user, ...patientData } = updatedPatient;
+            
+            const res = await api.put(`/api/patient/${updatedPatient.file_number}/`, patientData);
+            if (res.status === 200) {
+                alert("Patient Updated");
+                getPatients();
+            } else {
+                alert("Failed to update Patient");
+            }
+        } catch (error) {
+            alert(error);
+        }
     };
 
     return (

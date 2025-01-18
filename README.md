@@ -13,9 +13,15 @@ This project is a full-stack web application built with Django (backend) and Rea
    cd AdamCMPS272Project
    cd backend
    pip install -r requirements.txt
+   cd .. 
+   cd env 
+   Scripts/activate
+   cd ..
+   cd backend
    python manage.py makemigrations
    python manage.py migrate
    python manage.py runserver
+   #split terminal
    cd ../frontend
    npm install
    npm run dev

@@ -11,31 +11,52 @@ function Home() {
     const [selectedAppointment, setSelectedAppointment] = useState("");
     const [noteContent, setNoteContent] = useState("");
     const [noteDate, setNoteDate] = useState("");
+    const [username, setUsername] = useState("");
 
     useEffect(() => {
         getNotes();
         getPatients();
         getAppointments();
+        getUserName();
     }, []);
+
+    const getUserName = () => {
+        api.get("/api/username/")
+            .then((res) => res.data)
+            .then((data) => {
+                setUsername(data.username); // Ensure only the username is set
+                console.log(data);
+            })
+            .catch((error) => alert(error + " Failed to get username"));
+    };
 
     const getNotes = () => {
         api.get("/api/notes/")
             .then((res) => res.data)
-            .then((data) => { setNotes(data); console.log(data) })
-            .catch((err) => alert(err+" Unauthorized Access"));
+            .then((data) => {
+                setNotes(data);
+                console.log(data);
+            })
+            .catch((err) => alert(err + " Refresh your Token - log in again with your credentials"));
     };
 
     const getPatients = () => {
         api.get("/api/patient/")
             .then((res) => res.data)
-            .then((data) => { setPatients(data); console.log(data) })
+            .then((data) => {
+                setPatients(data);
+                console.log(data);
+            })
             .catch((err) => alert(err));
     };
 
     const getAppointments = () => {
         api.get("/api/appointment/")
             .then((res) => res.data)
-            .then((data) => { setAppointments(data); console.log(data) })
+            .then((data) => {
+                setAppointments(data);
+                console.log(data);
+            })
             .catch((err) => alert(err));
     };
 
@@ -64,6 +85,7 @@ function Home() {
 
     return (
         <div>
+            <h1>Welcome, {username}</h1>
             <div>
                 <h2>Notes</h2>
                 {notes.map((note) => (

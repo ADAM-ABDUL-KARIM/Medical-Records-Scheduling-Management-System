@@ -73,14 +73,14 @@ class AdminAppointment(models.Model):
         return f"Admin Appointment {self.admin_appointment_id}"
 
 class Availability(models.Model):
+    healthcare_professional = models.ForeignKey(HealthCareProfessional, on_delete=models.CASCADE)
     availability_id = models.AutoField(primary_key=True)
     availability_date = models.DateTimeField()
     end_time = models.TimeField()
-    healthcare_professional = models.ForeignKey(HealthCareProfessional, on_delete=models.CASCADE)
-    
+   
 
     def __str__(self):
-        return f"Availability on {self.availability_date} until {self.end_time}"
+        return f"Availability on {self.availability_date} until {self.end_time} with {self.healthcare_professional}"
 
 class HealthCareProfessionalAvailability(models.Model):
     healthcare_professional_availability_id = models.AutoField(primary_key=True)

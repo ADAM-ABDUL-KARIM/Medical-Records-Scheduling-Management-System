@@ -1,29 +1,35 @@
-import  { useState } from "react";
+import { useState } from "react";
 import api from "../api";
 
 function WriteRecords() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [dateOfBirth, setDateOfBirth] = useState("");
-    const [nationality, setNationality] = useState("");
-    const [address, setAddress] = useState("");
-    const [maritalStatus, setMaritalStatus] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [gender, setGender] = useState("");
-    const [height, setHeight] = useState("");
-    const [educationalLevel, setEducationalLevel] = useState("");
-    const [employmentStatus, setEmploymentStatus] = useState("");
-    const [dominantHand, setDominantHand] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [activityLevel, setActivityLevel] = useState("");
+    const [username, setUsername] = useState("defaultUsername");
+    const [password, setPassword] = useState("defaultPassword");
+    const [firstName, setFirstName] = useState("John");
+    const [lastName, setLastName] = useState("Doe");
+    const [dateOfBirth, setDateOfBirth] = useState("2000-01-01");
+    const [nationality, setNationality] = useState("Lebanese");
+    const [address, setAddress] = useState("Default Address");
+    const [maritalStatus, setMaritalStatus] = useState("Single");
+    const [phoneNumber, setPhoneNumber] = useState("1234567890");
+    const [gender, setGender] = useState("Male");
+    const [height, setHeight] = useState("170");
+    const [educationalLevel, setEducationalLevel] = useState("Bachelor's");
+    const [employmentStatus, setEmploymentStatus] = useState("Employed");
+    const [dominantHand, setDominantHand] = useState("Right");
+    const [startDate, setStartDate] = useState("2023-01-01");
+    const [activityLevel, setActivityLevel] = useState("Active");
     const [isRecovered, setIsRecovered] = useState(false);
-    const [diagnosis, setDiagnosis] = useState([""]);
-    const [medication, setMedication] = useState([""]);
+    const [diagnosis, setDiagnosis] = useState(["Default Diagnosis"]);
+    const [medication, setMedication] = useState(["Default Medication"]);
 
     const createPatient = async (e) => {
         e.preventDefault();
         try {
             const response = await api.post("/api/patient/", {
+                user: {
+                    username: username,
+                    password: password,
+                },
                 first_name: firstName,
                 last_name: lastName,
                 dob: dateOfBirth,
@@ -55,23 +61,25 @@ function WriteRecords() {
     };
 
     const resetForm = () => {
-        setFirstName("");
-        setLastName("");
-        setDateOfBirth("");
-        setNationality("");
-        setAddress("");
-        setMaritalStatus("");
-        setPhoneNumber("");
-        setGender("");
-        setHeight("");
-        setEducationalLevel("");
-        setEmploymentStatus("");
-        setDominantHand("");
-        setStartDate("");
-        setActivityLevel("");
+        setUsername("defaultUsername");
+        setPassword("defaultPassword");
+        setFirstName("John");
+        setLastName("Doe");
+        setDateOfBirth("2000-01-01");
+        setNationality("Lebanese");
+        setAddress("Default Address");
+        setMaritalStatus("Single");
+        setPhoneNumber("1234567890");
+        setGender("Male");
+        setHeight("170");
+        setEducationalLevel("Bachelor's");
+        setEmploymentStatus("Employed");
+        setDominantHand("Right");
+        setStartDate("2023-01-01");
+        setActivityLevel("Active");
         setIsRecovered(false);
-        setDiagnosis([""]);
-        setMedication([""]);
+        setDiagnosis(["Default Diagnosis"]);
+        setMedication(["Default Medication"]);
     };
 
     const addDiagnosisField = () => setDiagnosis([...diagnosis, ""]);
@@ -92,6 +100,29 @@ function WriteRecords() {
         <div className="write-records-container">
             <h2>Write a Record</h2>
             <form onSubmit={createPatient} className="write-records-form">
+                {/* User Details */}
+                <fieldset>
+                    <legend>User Details</legend>
+
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        required
+                    />
+
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </fieldset>
+
                 {/* Patient Details */}
                 <fieldset>
                     <legend>Patient Details</legend>
@@ -298,4 +329,4 @@ function WriteRecords() {
     );
 }
 
-export default WriteRecords;    
+export default WriteRecords;

@@ -17,6 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
 
+class UsernameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username']
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     role = RoleSerializer()
@@ -39,17 +43,17 @@ class MedicationSerializer(serializers.ModelSerializer):
 class PatientSerializer(serializers.ModelSerializer):
     diagnosis = DiagnosisSerializer(many=True, required=False)
     medication = MedicationSerializer(many=True, required=False)
+    user = UserSerializer()
 
     class Meta:
         model = Patient
         fields = "__all__"
-        read_only_fields = ['user']
 
     def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create_user(**user_data)
         diagnosis_data = validated_data.pop('diagnosis', [])
         medication_data = validated_data.pop('medication', [])
-        request = self.context.get('request')
-        user = request.user if request else None
         patient = Patient.objects.create(user=user, **validated_data)
 
         for diag in diagnosis_data:
@@ -60,27 +64,29 @@ class PatientSerializer(serializers.ModelSerializer):
 
         return patient
 
+class PatientUpdateSerializer(serializers.ModelSerializer):
+    diagnosis = DiagnosisSerializer(many=True, required=False)
+    medication = MedicationSerializer(many=True, required=False)
+
+    class Meta:
+        model = Patient
+        fields = [
+            "first_name", "last_name", "dob", "nationality", "address",
+            "marital_status", "phone_number", "gender", "height",
+            "educational_level", "employment_status", "dominant_hand",
+            "start_date", "activity_level", "is_recovered", "diagnosis", "medication"
+        ]
+
     def update(self, instance, validated_data):
         diagnosis_data = validated_data.pop('diagnosis', [])
         medication_data = validated_data.pop('medication', [])
 
-        instance.first_name = validated_data.get('first_name', instance.first_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.dob = validated_data.get('dob', instance.dob)
-        instance.nationality = validated_data.get('nationality', instance.nationality)
-        instance.address = validated_data.get('address', instance.address)
-        instance.marital_status = validated_data.get('marital_status', instance.marital_status)
-        instance.phone_number = validated_data.get('phone_number', instance.phone_number)
-        instance.gender = validated_data.get('gender', instance.gender)
-        instance.height = validated_data.get('height', instance.height)
-        instance.educational_level = validated_data.get('educational_level', instance.educational_level)
-        instance.employment_status = validated_data.get('employment_status', instance.employment_status)
-        instance.dominant_hand = validated_data.get('dominant_hand', instance.dominant_hand)
-        instance.start_date = validated_data.get('start_date', instance.start_date)
-        instance.activity_level = validated_data.get('activity_level', instance.activity_level)
-        instance.is_recovered = validated_data.get('is_recovered', instance.is_recovered)
+        # Update patient fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
         instance.save()
 
+        # Update related models
         instance.diagnosis.all().delete()
         for diag in diagnosis_data:
             Diagnosis.objects.create(patient=instance, **diag)
@@ -90,6 +96,7 @@ class PatientSerializer(serializers.ModelSerializer):
             Medication.objects.create(patient=instance, **med)
 
         return instance
+  
 class AdminSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
@@ -110,7 +117,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ["appointment_id","healthcare_professional", "patient", "appointment_datetime", "healthpro_details", "patient_name"]
+        fields = ["appointment_id", "healthcare_professional", "patient", "appointment_datetime", "healthpro_details", "patient_name"]
 
     def get_patient_name(self, obj):
         return f"{obj.patient.first_name} {obj.patient.last_name}"
@@ -122,6 +129,13 @@ class AppointmentSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        healthcare_professional = validated_data['healthcare_professional']
+        appointment_datetime = validated_data['appointment_datetime']
+
+        # Check for conflicts
+        if Appointment.objects.filter(healthcare_professional=healthcare_professional, appointment_datetime=appointment_datetime).exists():
+            raise serializers.ValidationError("An appointment with the same healthcare professional at the same time already exists.")
+
         appointment = Appointment.objects.create(**validated_data)
         return appointment
             

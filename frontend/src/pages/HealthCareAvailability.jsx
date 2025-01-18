@@ -32,7 +32,15 @@ function HealthCareAvailability() {
             })
             .catch((error) => alert(error + "Failed to get HPros"));
     };
+    const deleteAvailability = (id) =>{
+        api.delete(`/api/availability/delete/${id}/`)
+        .then((res) => {
+            if (res.status == 204 ) alert("Availability Deleted");
+            else alert("Failed to Delete Availability");
+            getAvailabilies();
 
+        }).catch((error) => alert(error));
+    }
     const createAvailability = (e) => {
         e.preventDefault();
         api.post("/api/availability/", {
@@ -42,7 +50,9 @@ function HealthCareAvailability() {
         })
             .then((res) => {
                 if (res.status === 201) alert("Availability Created");
+                
                 else alert("Failed to create availability");
+                getAvailabilies();
             })
             .catch((error) => alert(error));
     };
@@ -53,7 +63,7 @@ function HealthCareAvailability() {
 
             {
                 availabilities.map((availability) => (
-                    <Availability availability = {availability} key = {availability.availability_id} />
+                    <Availability availability = {availability} key = {availability.availability_id} onDelete={deleteAvailability} />
                 ))
             }
 

@@ -15,7 +15,9 @@ from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
 import os
+import datetime
 
+now = datetime.datetime.now()
 # load an enviroment variable file use that for havving credentials for the DB
 load_dotenv()
 
@@ -133,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Helsinki'
 
 USE_I18N = True
 

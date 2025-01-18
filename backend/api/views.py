@@ -2,14 +2,14 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
 from .serializers import *
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny,IsAuthenticated
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 import openpyxl
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
+from rest_framework.views import *
 
 class HealthcareProfessionalRetrieve (generics.ListCreateAPIView):
     serializer_class = HealthCareProfessionalSerializer
@@ -32,7 +32,7 @@ class PatientRetrieve(generics.ListCreateAPIView):
         serializer.save()
     
 class PatientUpdate(generics.UpdateAPIView):  
-    serializer_class = PatientSerializer
+    serializer_class = PatientUpdateSerializer
     permission_classes = [AllowAny]
 
     def get_queryset(self):
@@ -99,7 +99,13 @@ class ProfileView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user.profile
+class UsernameView(APIView):
+    permission_classes = [AllowAny]
 
+    def get(self, request):
+        if request.user.is_authenticated:
+            return Response({"username": request.user.username})
+        return Response({"username": "Guest"})
 class AvailabilityView(generics.ListCreateAPIView):
     serializer_class = AvailabilitySerializer
     permission_classes = [AllowAny]
@@ -112,7 +118,13 @@ class AvailabilityView(generics.ListCreateAPIView):
         return super()
     def get_queryset(self):
         return Availability.objects.all()
-     
+
+class AvailabilityDelete(generics.DestroyAPIView):
+    serializer_class = AvailabilitySerializer
+    permission_classes  = [AllowAny]
+    
+    def get_queryset(self):
+        return Availability.objects.all() 
 def export_patients_excel(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
     workbook = openpyxl.Workbook()
@@ -153,3 +165,6 @@ def export_patient_pdf(request, pk):
     p.showPage()
     p.save()
     return response
+
+
+
