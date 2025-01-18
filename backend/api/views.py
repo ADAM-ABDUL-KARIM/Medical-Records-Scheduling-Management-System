@@ -92,6 +92,11 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        if User.objects.filter(username=username).exists():
+            return Response({"detail": "Username already exists."}, status=status.HTTP_409_CONFLICT)
+        return super().create(request, *args, **kwargs)
 class ProfileView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
@@ -125,19 +130,34 @@ class AvailabilityDelete(generics.DestroyAPIView):
     
     def get_queryset(self):
         return Availability.objects.all() 
+    
 def export_patients_excel(request, pk):
     patient = get_object_or_404(Patient, pk=pk)
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
     worksheet.title = 'Patients'
-    columns = ['First Name', 'Last Name', 'Date Of Birth']
+    columns = [
+        'First Name', 'Last Name', 'Date Of Birth', 'Nationality', 'Address',
+        'Marital Status', 'Phone Number', 'Gender', 'Height', 'Educational Level',
+        'Employment Status', 'Dominant Hand', 'Start Date', 'Activity Level', 'Is Recovered',
+        'Diagnosis', 'Medication', 'Notes'
+    ]
     row_num = 1
 
     for col_num, column_title in enumerate(columns, 1):
         cell = worksheet.cell(row=row_num, column=col_num)
         cell.value = column_title
 
-    patient_data = [patient.first_name, patient.last_name, patient.dob]
+    diagnosis = ", ".join([d.diagnosis for d in patient.diagnosis.all()])
+    medication = ", ".join([m.medication_name for m in patient.medication.all()])
+    notes = ", ".join([n.note_content for n in patient.notes.all()])
+
+    patient_data = [
+        patient.first_name, patient.last_name, patient.dob, patient.nationality, patient.address,
+        patient.marital_status, patient.phone_number, patient.gender, patient.height, patient.educational_level,
+        patient.employment_status, patient.dominant_hand, patient.start_date, patient.activity_level, patient.is_recovered,
+        diagnosis, medication, notes
+    ]
     row_num += 1
     for col_num, cell_value in enumerate(patient_data, 1):
         cell = worksheet.cell(row=row_num, column=col_num)
@@ -154,17 +174,48 @@ def export_patient_pdf(request, pk):
     response = HttpResponse(content_type='application/pdf')
     filename = f'patient_{patient.first_name}_{patient.last_name}_{pk}.pdf'
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
-    p = canvas.Canvas(response, pagesize=letter)
-    width, height = letter
+    
+    p = canvas.Canvas(response)
+    width, height = p._pagesize  # Get page dimensions
 
-    p.drawString(100, height - 100, f"Patient Report for {patient.first_name} {patient.last_name}")
-    p.drawString(100, height - 150, f"First Name: {patient.first_name}")
-    p.drawString(100, height - 200, f"Last Name: {patient.last_name}")
-    p.drawString(100, height - 250, f"Date of Birth: {patient.dob}")
+    def draw_patient_info(p, patient, y, height):
+        fields = [
+            f"Patient Report for {patient.first_name} {patient.last_name}",
+            f"First Name: {patient.first_name}",
+            f"Last Name: {patient.last_name}",
+            f"Date of Birth: {patient.dob}",
+            f"Nationality: {patient.nationality}",
+            f"Address: {patient.address}",
+            f"Marital Status: {patient.marital_status}",
+            f"Phone Number: {patient.phone_number}",
+            f"Gender: {patient.gender}",
+            f"Height: {patient.height} cm",
+            f"Educational Level: {patient.educational_level}",
+            f"Employment Status: {patient.employment_status}",
+            f"Dominant Hand: {patient.dominant_hand}",
+            f"Start Date: {patient.start_date}",
+            f"Activity Level: {patient.activity_level}",
+            f"Recovered: {'Yes' if patient.is_recovered else 'No'}",
+            f"Diagnosis: {', '.join([d.diagnosis for d in patient.diagnosis.all()])}",
+            f"Medication: {', '.join([m.medication_name for m in patient.medication.all()])}",
+            f"Notes: {', '.join([n.note_content for n in patient.notes.all()])}"
+        ]
 
+        # Loop through fields and draw them on the canvas
+        for field in fields:
+            if y < 50:  # If space is less than the bottom margin
+                p.showPage()  # Create a new page
+                y = height - 100  # Reset the y-coordinate for the new page
+            p.drawString(100, y, field)  # Draw the text
+            y -= 50  # Move down by 50 units for the next line
+
+        return y
+
+    # Initial vertical position
+    y = height - 100
+    y = draw_patient_info(p, patient, y, height)
+
+    # Save the PDF and return the response
     p.showPage()
     p.save()
     return response
-
-
-

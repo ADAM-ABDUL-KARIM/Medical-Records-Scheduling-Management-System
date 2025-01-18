@@ -285,7 +285,7 @@ function ViewRecord({ Record, onDelete, onSave }) {
                         <b>Dominant Hand: </b>
                         {Record.dominant_hand}
                     </p>
-                    <p className="rec-date">
+                    <p className="rec-content">
                         <b>Start Date: </b>
                         {Record.start_date}
                     </p>
