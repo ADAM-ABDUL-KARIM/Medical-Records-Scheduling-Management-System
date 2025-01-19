@@ -9,7 +9,7 @@
   left: 10px;
   font-size: 25px;
   font-weight: bold;
-  color: #44546A;
+  color: #44546a;
   z-index: 1000;
 }
 
@@ -18,23 +18,48 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-color: #44546A;
+  color: #44546a;
 }
 
 .Home-ul div a {
-  color: whitesmoke;
   text-decoration: none;
-width: 300px;
-height: 200px;  
-display: flex;
-align-items: center;
-justify-content: center;
+  width: 300px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.Home-ul div a:hover{
-  scale: 2;
-  background-color: #44546A;
+.Home-ul div:hover {
+  scale: 1.2;
+ 
   transition: ease 0.3s;
-  transition: ease-out 0.3s;
+
+}
+.Home-ul div a:hover img{
+  opacity: 0.3;
+}
+.Home-ul div a:hover .hiddenContainer{
+  display: inline-block;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 1;
+
+
+}
+.hiddenContainer{
+
+  background-color: #44546a;
+  padding: 10px;
+  width: auto;
+  text-align: center;
+  color: azure;
+  font-size: 35px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  
 }
 .Home-ul div {
   display: flex;
@@ -43,13 +68,12 @@ justify-content: center;
   margin: 20px;
   width: 300px;
   height: 200px;
-  
-  background-color: steelblue;
-  border: #44546A solid 1px;
+  position: relative;
+
+  box-shadow: #44546a 0 0 5px;
   font-family: "montreal";
   overflow: hidden; /* Hide overflow content */
 }
 
-.steelbluespan {
-  color: rebeccapurple;
-}
+
+  

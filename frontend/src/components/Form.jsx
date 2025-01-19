@@ -33,15 +33,21 @@ function Form({ route, method }) {
         if (error.response.status === 400) {
           setErrorMessage("Invalid credentials. Please try again.");
         } else if (error.response.status === 401) {
-          setErrorMessage("Unauthorized. Please check your username and password.");
+          setErrorMessage(
+            "Unauthorized. Please check your username and password."
+          );
         } else if (error.response.status === 409) {
-          setErrorMessage("Username already exists. Please choose a different username.");
+          setErrorMessage(
+            "Username already exists. Please choose a different username."
+          );
         } else {
           setErrorMessage("An error occurred. Please try again later.");
         }
       } else if (error.request) {
         // Request was made but no response was received
-        setErrorMessage("No response from server. Please check your network connection.");
+        setErrorMessage(
+          "No response from server. Please check your network connection."
+        );
       } else {
         // Something happened in setting up the request
         setErrorMessage("An error occurred. Please try again.");
@@ -53,7 +59,6 @@ function Form({ route, method }) {
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-      
       <h1>{name}</h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <input

@@ -3,72 +3,78 @@ import api from "../api";
 import "../styles/Export.css";
 
 function ExportPatients() {
-    const [patients, setPatients] = useState([]);
-    const [selectedPatient, setSelectedPatient] = useState("");
-    const [exportFormat, setExportFormat] = useState("pdf");
-    const [errorMessage, setErrorMessage] = useState(""); // Add state for error message
+  const [patients, setPatients] = useState([]);
+  const [selectedPatient, setSelectedPatient] = useState("");
+  const [exportFormat, setExportFormat] = useState("pdf");
+  const [errorMessage, setErrorMessage] = useState(""); // Add state for error message
 
-    useEffect(() => {
-        getPatients();
-    }, []);
+  useEffect(() => {
+    getPatients();
+  }, []);
 
-    const getPatients = async () => {
-        try {
-            const res = await api.get("/api/patient/");
-            setPatients(res.data);
-        } catch (err) {
-            setErrorMessage("Failed to load patients.");
+  const getPatients = async () => {
+    try {
+      const res = await api.get("/api/patient/");
+      setPatients(res.data);
+    } catch (err) {
+      setErrorMessage("Failed to load patients.");
+    }
+  };
+
+  const handleExport = async () => {
+    if (!selectedPatient) {
+      setErrorMessage("Please select a patient to export.");
+      return;
+    }
+
+    try {
+      const endpoint = exportFormat === "pdf" ? "pdf" : "excel";
+      const response = await api.get(
+        `/api/export/patient/${endpoint}/${selectedPatient}/`,
+        {
+          responseType: "blob",
         }
-    };
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `patients.${exportFormat}`);
+      document.body.appendChild(link);
+      link.click();
+      setErrorMessage(""); // Clear error message on successful export
+    } catch (error) {
+      setErrorMessage(
+        `Failed to export patients to ${exportFormat.toUpperCase()}`
+      );
+    }
+  };
 
-    const handleExport = async () => {
-        if (!selectedPatient) {
-            setErrorMessage("Please select a patient to export.");
-            return;
-        }
-
-        try {
-            const endpoint = exportFormat === "pdf" ? "pdf" : "excel";
-            const response = await api.get(`/api/export/patient/${endpoint}/${selectedPatient}/`, {
-                responseType: "blob",
-            });
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", `patients.${exportFormat}`);
-            document.body.appendChild(link);
-            link.click();
-            setErrorMessage(""); // Clear error message on successful export
-        } catch (error) {
-            setErrorMessage(`Failed to export patients to ${exportFormat.toUpperCase()}`);
-        }
-    };
-
-    return (
-        <div className="export-container">
-            <h2>Export Patients</h2>
-            <select
-                value={selectedPatient}
-                onChange={(e) => setSelectedPatient(e.target.value)}
-            >
-                <option value="">Select a Patient</option>
-                {patients.map((patient) => (
-                    <option key={patient.file_number} value={patient.file_number}>
-                        {patient.first_name} {patient.last_name}
-                    </option>
-                ))}
-            </select>
-            <select
-                value={exportFormat}
-                onChange={(e) => setExportFormat(e.target.value)}
-            >
-                <option value="pdf">PDF</option>
-                <option value="excel">Excel</option>
-            </select>
-            <button onClick={handleExport}>Export</button>
-            {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
-        </div>
-    );
+  return (
+    <div className="export-container">
+      <h2>Export Patients</h2>
+      <select
+        value={selectedPatient}
+        onChange={(e) => setSelectedPatient(e.target.value)}
+      >
+        <option value="">Select a Patient</option>
+        {patients.map((patient) => (
+          <option key={patient.file_number} value={patient.file_number}>
+            {patient.first_name} {patient.last_name}
+          </option>
+        ))}
+      </select>
+      <select
+        value={exportFormat}
+        onChange={(e) => setExportFormat(e.target.value)}
+      >
+        <option value="pdf">PDF</option>
+        <option value="excel">Excel</option>
+      </select>
+      <button onClick={handleExport}>Export</button>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}{" "}
+      {/* Display error message */}
+    </div>
+  );
 }
 
 export default ExportPatients;

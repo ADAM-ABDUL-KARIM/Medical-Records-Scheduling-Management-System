@@ -23,7 +23,7 @@
   width: 95%;
   padding: 10px;
   margin: 20px 0;
-  background-color: steelblue  ;
+  background-color: steelblue;
   color: white;
   border: none;
   border-radius: 4px;
@@ -36,7 +36,6 @@
 }
 
 .error-message {
-  
   justify-content: left;
   color: maroon;
   margin-bottom: 10px;
