@@ -37,8 +37,8 @@ function Home() {
     <div><Link to="/appointments">Appointments</Link></div>
     <div><Link to="/availability">Availability</Link></div>
     
-    <div><Link to="/export/patient/excel">Export (Excel)</Link></div>
-    <div><Link to="/export/patient/pdf">Export (PDF)</Link></div>
+    <div><Link to="/export">Export Patients</Link></div>
+ 
 </div>
   
     </>

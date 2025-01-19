@@ -1,22 +1,41 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import "../styles/Record.css";
 
 function ViewRecord({ Record, onDelete, onSave }) {
     const [isEditing, setIsEditing] = useState(false);
     const [editedRecord, setEditedRecord] = useState({ ...Record });
-    const [isConfirming, setIsConfirming] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const detailsRef = useRef(null);
+
+    useEffect(() => {
+        if (isExpanded) {
+            detailsRef.current.style.height = `${detailsRef.current.scrollHeight}px`;
+        } else {
+            detailsRef.current.style.height = "0px";
+        }
+    }, [isExpanded]);
 
     const handleDeleteClick = () => {
-        setIsConfirming(true);
+        confirmDelete(Record.file_number);
     };
 
-    const handleConfirmDelete = () => {
-        onDelete(Record.file_number);
-        setIsConfirming(false);
-    };
-
-    const handleCancelDelete = () => {
-        setIsConfirming(false);
+    const confirmDelete = (id) => {
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure you want to delete this record?',
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => onDelete(id)
+                },
+                {
+                    label: 'No',
+                    onClick: () => {}
+                }
+            ]
+        });
     };
 
     const handleChange = (e) => {
@@ -83,248 +102,251 @@ function ViewRecord({ Record, onDelete, onSave }) {
 
     return (
         <div className="rec-container">
-            {isEditing ? (
-                <>
-                    <input
-                        className="rec-content"
-                        name="first_name"
-                        value={editedRecord.first_name}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="last_name"
-                        value={editedRecord.last_name}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="dob"
-                        type="date"
-                        value={editedRecord.dob}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="nationality"
-                        value={editedRecord.nationality}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="marital_status"
-                        value={editedRecord.marital_status}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="phone_number"
-                        value={editedRecord.phone_number}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="gender"
-                        value={editedRecord.gender}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="height"
-                        type="number"
-                        value={editedRecord.height}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="educational_level"
-                        value={editedRecord.educational_level}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="employment_status"
-                        value={editedRecord.employment_status}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="dominant_hand"
-                        value={editedRecord.dominant_hand}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="start_date"
-                        type="date"
-                        value={editedRecord.start_date}
-                        onChange={handleChange}
-                    />
-                    <input
-                        className="rec-content"
-                        name="activity_level"
-                        value={editedRecord.activity_level}
-                        onChange={handleChange}
-                    />
-                    <label>
-                        Recovered:
+            <div className="rec-header" onClick={() => setIsExpanded(!isExpanded)}>
+                
+                <p className="rec-title">
+                    {Record.first_name} {Record.last_name} 
+                </p>
+               
+                <span className="arrow">{isExpanded ? "▲" : "▼"}</span>
+            </div>
+            <div className={`rec-details ${isExpanded ? "expanded" : ""}`} ref={detailsRef}>
+                {isEditing ? (
+                    <>
                         <input
-                            type="checkbox"
-                            name="is_recovered"
-                            checked={editedRecord.is_recovered}
-                            onChange={(e) =>
-                                setEditedRecord((prev) => ({
-                                    ...prev,
-                                    is_recovered: e.target.checked,
-                                }))
-                            }
+                            className="rec-content"
+                            name="first_name"
+                            value={editedRecord.first_name}
+                            onChange={handleChange}
                         />
-                    </label>
-                    <fieldset>
-                        <legend>Diagnosis</legend>
-                        {editedRecord.diagnosis.map((d, index) => (
-                            <div key={index} className="dynamic-field">
+                        <input
+                            className="rec-content"
+                            name="last_name"
+                            value={editedRecord.last_name}
+                            onChange={handleChange}
+                        />
+                        <input
+                            className="rec-content"
+                            name="dob"
+                            type="date"
+                            value={editedRecord.dob}
+                            onChange={handleChange}
+                        />
+                        <input
+                            className="rec-content"
+                            name="nationality"
+                            value={editedRecord.nationality}
+                            onChange={handleChange}
+                        />
+                        <input
+                            className="rec-content"
+                            name="marital_status"
+                            value={editedRecord.marital_status}
+                            onChange={handleChange}
+                        />
+                        <input
+                            className="rec-content"
+                            name="phone_number"
+                            value={editedRecord.phone_number}
+                            onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="gender"
+                                value={editedRecord.gender}
+                                onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="height"
+                                type="number"
+                                value={editedRecord.height}
+                                onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="educational_level"
+                                value={editedRecord.educational_level}
+                                onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="employment_status"
+                                value={editedRecord.employment_status}
+                                onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="dominant_hand"
+                                value={editedRecord.dominant_hand}
+                                onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="start_date"
+                                type="date"
+                                value={editedRecord.start_date}
+                                onChange={handleChange}
+                            />
+                            <input
+                                className="rec-content"
+                                name="activity_level"
+                                value={editedRecord.activity_level}
+                                onChange={handleChange}
+                            />
+                            <label>
+                                Recovered:
                                 <input
-                                    type="text"
-                                    value={d.diagnosis}
+                                    type="checkbox"
+                                    name="is_recovered"
+                                    checked={editedRecord.is_recovered}
                                     onChange={(e) =>
-                                        handleDiagnosisChange(index, e.target.value)
+                                        setEditedRecord((prev) => ({
+                                            ...prev,
+                                            is_recovered: e.target.checked,
+                                        }))
                                     }
-                                    placeholder={`Diagnosis ${index + 1}`}
-                                    required
                                 />
-                                {editedRecord.diagnosis.length > 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => removeDiagnosisField(index)}
-                                        className="remove-button"
-                                    >
-                                        Remove
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                        <button type="button" onClick={addDiagnosisField} className="add-button">
-                            Add Diagnosis
-                        </button>
-                    </fieldset>
-                    <fieldset>
-                        <legend>Medication</legend>
-                        {editedRecord.medication.map((m, index) => (
-                            <div key={index} className="dynamic-field">
-                                <input
-                                    type="text"
-                                    value={m.medication_name}
-                                    onChange={(e) =>
-                                        handleMedicationChange(index, e.target.value)
-                                    }
-                                    placeholder={`Medication ${index + 1}`}
-                                    required
-                                />
-                                {editedRecord.medication.length > 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => removeMedicationField(index)}
-                                        className="remove-button"
-                                    >
-                                        Remove
-                                    </button>
-                                )}
-                            </div>
-                        ))}
-                        <button type="button" onClick={addMedicationField} className="add-button">
-                            Add Medication
-                        </button>
-                    </fieldset>
-                    <button className="save-button" onClick={handleSave}>
-                        Save
-                    </button>
-                    <button className="save-button" onClick={handleCancel}>
-                        Cancel
-                    </button>
-                </>
-            ) : (
-                <>
-                    <p className="rec-content">
-                        <b>First Name:</b> {Record.first_name}
-                    </p>
-                    <p className="rec-content">
-                        <b>Last Name: </b>
-                        {Record.last_name}
-                    </p>
-                    <p className="rec-content">
-                        <b>Date Of Birth: </b>
-                        {Record.dob}
-                    </p>
-                    <p className="rec-content">
-                        <b>Nationality: </b>
-                        {Record.nationality}
-                    </p>
-                    <p className="rec-content">
-                        <b>Marital Status:</b> {Record.marital_status}
-                    </p>
-                    <p className="rec-content">
-                        <b>Phone Number:</b> {Record.phone_number}
-                    </p>
-                    <p className="rec-content">
-                        <b>Gender: </b>
-                        {Record.gender}
-                    </p>
-                    <p className="rec-content">
-                        <b>Height:</b> {Record.height} cm
-                    </p>
-                    <p className="rec-content">
-                        <b>Educational Level: </b>
-                        {Record.educational_level}
-                    </p>
-                    <p className="rec-content">
-                        <b>Employment Status: </b>
-                        {Record.employment_status}
-                    </p>
-                    <p className="rec-content">
-                        <b>Dominant Hand: </b>
-                        {Record.dominant_hand}
-                    </p>
-                    <p className="rec-content">
-                        <b>Start Date: </b>
-                        {Record.start_date}
-                    </p>
-                    <p className="rec-content">
-                        <b>Activity Level:</b> {Record.activity_level}
-                    </p>
-                    <p className="rec-content">
-                        <b>Recovered:</b>
-                        {Record.is_recovered ? "Yes" : "No"}
-                    </p>
-                    <p className="rec-content">
-                        <b>Diagnosis:</b> {Record.diagnosis.map((d) => d.diagnosis).join(", ")}
-                    </p>
-                    <p className="rec-content">
-                        <b>Medication:</b> {Record.medication.map((m) => m.medication_name).join(", ")}
-                    </p>
+                            </label>
+                            <fieldset>
+                                <legend>Diagnosis</legend>
+                                {editedRecord.diagnosis.map((d, index) => (
+                                    <div key={index} className="dynamic-field">
+                                        <input
+                                            type="text"
+                                            value={d.diagnosis}
+                                            onChange={(e) =>
+                                                handleDiagnosisChange(index, e.target.value)
+                                            }
+                                            placeholder={`Diagnosis ${index + 1}`}
+                                            required
+                                        />
+                                        {editedRecord.diagnosis.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => removeDiagnosisField(index)}
+                                                className="remove-button"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addDiagnosisField} className="add-button">
+                                    Add Diagnosis
+                                </button>
+                            </fieldset>
+                            <fieldset>
+                                <legend>Medication</legend>
+                                {editedRecord.medication.map((m, index) => (
+                                    <div key={index} className="dynamic-field">
+                                        <input
+                                            type="text"
+                                            value={m.medication_name}
+                                            onChange={(e) =>
+                                                handleMedicationChange(index, e.target.value)
+                                            }
+                                            placeholder={`Medication ${index + 1}`}
+                                            required
+                                        />
+                                        {editedRecord.medication.length > 1 && (
+                                            <button
+                                                type="button"
+                                                onClick={() => removeMedicationField(index)}
+                                                className="remove-button"
+                                            >
+                                                Remove
+                                            </button>
+                                        )}
+                                    </div>
+                                ))}
+                                <button type="button" onClick={addMedicationField} className="add-button">
+                                    Add Medication
+                                </button>
+                            </fieldset>
+                            <button className="save-button" onClick={handleSave}>
+                                Save
+                            </button>
+                            <button className="save-button" onClick={handleCancel}>
+                                Cancel
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <p className="rec-content">
+                                <b>First Name:</b> {Record.first_name}
+                            </p>
+                            <p className="rec-content">
+                                <b>Last Name: </b>
+                                {Record.last_name}
+                            </p>
+                            <p className="rec-content">
+                                <b>Date Of Birth: </b>
+                                {Record.dob}
+                            </p>
+                            <p className="rec-content">
+                                <b>Nationality: </b>
+                                {Record.nationality}
+                            </p>
+                            <p className="rec-content">
+                                <b>Marital Status:</b> {Record.marital_status}
+                            </p>
+                            <p className="rec-content">
+                                <b>Phone Number:</b> {Record.phone_number}
+                            </p>
+                            <p className="rec-content">
+                                <b>Gender: </b>
+                                {Record.gender}
+                            </p>
+                            <p className="rec-content">
+                                <b>Height:</b> {Record.height} cm
+                            </p>
+                            <p className="rec-content">
+                                <b>Educational Level: </b>
+                                {Record.educational_level}
+                            </p>
+                            <p className="rec-content">
+                                <b>Employment Status: </b>
+                                {Record.employment_status}
+                            </p>
+                            <p className="rec-content">
+                                <b>Dominant Hand: </b>
+                                {Record.dominant_hand}
+                            </p>
+                            <p className="rec-content">
+                                <b>Start Date: </b>
+                                {Record.start_date}
+                            </p>
+                            <p className="rec-content">
+                                <b>Activity Level:</b> {Record.activity_level}
+                            </p>
+                            <p className="rec-content">
+                                <b>Recovered:</b>
+                                {Record.is_recovered ? "Yes" : "No"}
+                            </p>
+                            <p className="rec-content">
+                                <b>Diagnosis:</b> {Record.diagnosis.map((d) => d.diagnosis).join(", ")}
+                            </p>
+                            <p className="rec-content">
+                                <b>Medication:</b> {Record.medication.map((m) => m.medication_name).join(", ")}
+                            </p>
+                            <button
+                                className="edit-button"
+                                onClick={() => setIsEditing(true)}
+                            >
+                                Edit
+                            </button>
+                        </>
+                    )}
                     <button
-                        className="edit-button"
-                        onClick={() => setIsEditing(true)}
+                        className="delete-button"
+                        onClick={handleDeleteClick}
                     >
-                        Edit
+                        Delete
                     </button>
-                </>
-            )}
-            {isConfirming && (
-                <div className="confirmation-dialog">
-                    <p>Are you sure you want to delete this record?</p>
-                    <button className="confirm-button" onClick={handleConfirmDelete}>Yes</button>
-                    <button className="confirm-button" onClick={handleCancelDelete}>No</button>
                 </div>
-            )}
-            <button
-                className="delete-button"
-                onClick={handleDeleteClick}
-            >
-                Delete
-            </button>
-        </div>
-    );
-}
-
-export default ViewRecord;
+            </div>
+        );
+        }
+        
+        export default ViewRecord;

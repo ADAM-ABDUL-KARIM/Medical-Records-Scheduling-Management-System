@@ -1,5 +1,6 @@
 import { useState } from "react";
 import api from "../api";
+import "../styles/Record.css";
 
 function WriteRecords() {
     const [username, setUsername] = useState("defaultUsername");
@@ -103,165 +104,186 @@ function WriteRecords() {
                 {/* User Details */}
                 <fieldset>
                     <legend>User Details</legend>
-
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+                    <div className="two-column">
+                        <div>
+                            <label htmlFor="username">Username:</label>
+                            <input
+                                type="text"
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="password">Password:</label>
+                            <input
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
                 </fieldset>
 
                 {/* Patient Details */}
                 <fieldset>
                     <legend>Patient Details</legend>
-
-                    <label htmlFor="firstName">First Name:</label>
-                    <input
-                        type="text"
-                        id="firstName"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="lastName">Last Name:</label>
-                    <input
-                        type="text"
-                        id="lastName"
-                        value={lastName}
-                        onChange={(e) => setLastName(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="dateOfBirth">Date of Birth:</label>
-                    <input
-                        type="date"
-                        id="dateOfBirth"
-                        value={dateOfBirth}
-                        onChange={(e) => setDateOfBirth(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="nationality">Nationality:</label>
-                    <input
-                        type="text"
-                        id="nationality"
-                        value={nationality}
-                        onChange={(e) => setNationality(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="address">Address:</label>
-                    <input
-                        type="text"
-                        id="address"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="maritalStatus">Marital Status:</label>
-                    <input
-                        type="text"
-                        id="maritalStatus"
-                        value={maritalStatus}
-                        onChange={(e) => setMaritalStatus(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="phoneNumber">Phone Number:</label>
-                    <input
-                        type="text"
-                        id="phoneNumber"
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="gender">Gender:</label>
-                    <input
-                        type="text"
-                        id="gender"
-                        value={gender}
-                        onChange={(e) => setGender(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="height">Height (cm):</label>
-                    <input
-                        type="number"
-                        id="height"
-                        value={height}
-                        onChange={(e) => setHeight(e.target.value)}
-                        required
-                        min="0"
-                        step="0.1"
-                    />
-
-                    <label htmlFor="educationalLevel">Educational Level:</label>
-                    <input
-                        type="text"
-                        id="educationalLevel"
-                        value={educationalLevel}
-                        onChange={(e) => setEducationalLevel(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="employmentStatus">Employment Status:</label>
-                    <input
-                        type="text"
-                        id="employmentStatus"
-                        value={employmentStatus}
-                        onChange={(e) => setEmploymentStatus(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="dominantHand">Dominant Hand:</label>
-                    <input
-                        type="text"
-                        id="dominantHand"
-                        value={dominantHand}
-                        onChange={(e) => setDominantHand(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="startDate">Start Date:</label>
-                    <input
-                        type="date"
-                        id="startDate"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="activityLevel">Activity Level:</label>
-                    <input
-                        type="text"
-                        id="activityLevel"
-                        value={activityLevel}
-                        onChange={(e) => setActivityLevel(e.target.value)}
-                        required
-                    />
-
-                    <label htmlFor="isRecovered">Is Recovered:</label>
-                    <input
-                        type="checkbox"
-                        id="isRecovered"
-                        checked={isRecovered}
-                        onChange={(e) => setIsRecovered(e.target.checked)}
-                    />
+                    <div className="two-column">
+                        <div>
+                            <label htmlFor="firstName">First Name:</label>
+                            <input
+                                type="text"
+                                id="firstName"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="lastName">Last Name:</label>
+                            <input
+                                type="text"
+                                id="lastName"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="dateOfBirth">Date of Birth:</label>
+                            <input
+                                type="date"
+                                id="dateOfBirth"
+                                value={dateOfBirth}
+                                onChange={(e) => setDateOfBirth(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="nationality">Nationality:</label>
+                            <input
+                                type="text"
+                                id="nationality"
+                                value={nationality}
+                                onChange={(e) => setNationality(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="address">Address:</label>
+                            <input
+                                type="text"
+                                id="address"
+                                value={address}
+                                onChange={(e) => setAddress(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="maritalStatus">Marital Status:</label>
+                            <input
+                                type="text"
+                                id="maritalStatus"
+                                value={maritalStatus}
+                                onChange={(e) => setMaritalStatus(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="phoneNumber">Phone Number:</label>
+                            <input
+                                type="text"
+                                id="phoneNumber"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="gender">Gender:</label>
+                            <input
+                                type="text"
+                                id="gender"
+                                value={gender}
+                                onChange={(e) => setGender(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="height">Height (cm):</label>
+                            <input
+                                type="number"
+                                id="height"
+                                value={height}
+                                onChange={(e) => setHeight(e.target.value)}
+                                required
+                                min="0"
+                                step="0.1"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="educationalLevel">Educational Level:</label>
+                            <input
+                                type="text"
+                                id="educationalLevel"
+                                value={educationalLevel}
+                                onChange={(e) => setEducationalLevel(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="employmentStatus">Employment Status:</label>
+                            <input
+                                type="text"
+                                id="employmentStatus"
+                                value={employmentStatus}
+                                onChange={(e) => setEmploymentStatus(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="dominantHand">Dominant Hand:</label>
+                            <input
+                                type="text"
+                                id="dominantHand"
+                                value={dominantHand}
+                                onChange={(e) => setDominantHand(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="startDate">Start Date:</label>
+                            <input
+                                type="date"
+                                id="startDate"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="activityLevel">Activity Level:</label>
+                            <input
+                                type="text"
+                                id="activityLevel"
+                                value={activityLevel}
+                                onChange={(e) => setActivityLevel(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="isRecovered">Is Recovered:</label>
+                            <input
+                                type="checkbox"
+                                id="isRecovered"
+                                checked={isRecovered}
+                                onChange={(e) => setIsRecovered(e.target.checked)}
+                            />
+                        </div>
+                    </div>
                 </fieldset>
 
                 {/* Diagnosis Fields */}

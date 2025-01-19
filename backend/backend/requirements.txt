@@ -8,6 +8,6 @@ pytz
 sqlparse
 psycopg2-binary
 python-dotenv
+reportlab
+openpyxl
 
-
-need to expand the excel and pdf attributes

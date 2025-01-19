@@ -1,33 +1,43 @@
 .note-container {
-    padding: 10px;
-    margin: 20px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .note-title {
-    color: #333;
-  }
-  
-  .note-content {
-    color: #666;
-  }
-  
-  .note-date {
-    color: #999;
-    font-size: 0.8rem;
-  }
-  
-  .delete-button {
-    background-color: #f44336; /* Red */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .delete-button:hover {
-    background-color: #d32f2f; /* Darker red */
-  }
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+.note-container:hover {
+  background-color: #f4f4f4;
+}
+.note-container p span{
+color: steelblue;
+font-weight: bolder;
+}
+
+
+.note-content {
+  color: #44546A;
+  margin-bottom: 10px;
+}
+
+.note-date {
+  color: #999;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+
+.delete-button {
+  background-color: #ff4d4d; /* Consistent with other delete buttons */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #ff1a1a; /* Darker red for hover effect */
+}

@@ -110,6 +110,14 @@ class HealthCareProfessionalSerializer(serializers.ModelSerializer):
     class Meta:
         model = HealthCareProfessional
         fields = ['id', 'user','first_name', 'last_name', 'specialty', 'dob']
+        
+    
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = User.objects.create_user(**user_data)
+        healthpro = HealthCareProfessional.objects.create(user=user, **validated_data)
+        return healthpro
+
 
 class AppointmentSerializer(serializers.ModelSerializer):
     patient_name = serializers.SerializerMethodField()

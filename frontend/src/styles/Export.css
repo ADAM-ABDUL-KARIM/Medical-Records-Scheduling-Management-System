@@ -1,0 +1,38 @@
+.export-container {
+    padding: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 900px;
+    height: 300px;
+}
+
+.export-container h2 {
+    text-align: center;
+    color: steelblue;
+}
+
+.export-container select,
+.export-container button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.export-container button {
+    background-color: steelblue;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.export-container button:hover {
+    background-color: darkgrey;
+}

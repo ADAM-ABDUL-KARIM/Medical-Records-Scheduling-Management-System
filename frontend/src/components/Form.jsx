@@ -12,7 +12,7 @@ function Form({ route, method }) {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const name = method === "login" ? "Login" : "Register";
+  const name = method === "login" ? "Login" : "Register an Admin";
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -53,7 +53,7 @@ function Form({ route, method }) {
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
-      <h1>Adam SWE Project</h1>
+      
       <h1>{name}</h1>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
       <input

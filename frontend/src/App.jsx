@@ -9,10 +9,11 @@ import WriteRecords from "./pages/WriteRecords";
 import Appointments from "./pages/Appointments";
 import ViewPatientRecrods from "./pages/ViewPatientRecrods";
 import HealthCareAvailability from "./pages/HealthCareAvailability";
-import NavBar from "./components/NavBar";
-import ExportPatientsExcel from "./pages/ExportPatientsExcel"; // Import the ExportPatientsExcel component
-import ExportPatientsPDF from "./pages/ExportPatientsPDF"; // Import the ExportPatientsPDF component
-import Notes from "./pages/Notes"
+import SideMenu from "./components/SideMenu"; // Import the SideMenu component
+import Notes from "./pages/Notes";
+import RegisterHealthPro from "./pages/RegisterHealthPro";
+import ExportPatients from "./pages/ExportPatients"; // Import the unified export page
+
 function Logout() {
   localStorage.clear();
   return <Navigate to="/login/" />;
@@ -24,13 +25,13 @@ function RegisterandLogout() {
 }
 
 function AppContent() {
-  // hide navbar in log in and register pages
+  // hide side menu in log in and register pages
   const location = useLocation();
-  const hideNavBar = location.pathname === "/login/" || location.pathname === "/register" ||location.pathname === "/register/" || location.pathname === "/login" || location.pathname === "/" ;
+  const hideSideMenu = location.pathname === "/login/" || location.pathname === "/register" || location.pathname === "/register/" || location.pathname === "/login" || location.pathname === "/";
 
   return (
     <>
-      {!hideNavBar && <NavBar />}
+      {!hideSideMenu && <SideMenu />} {/* Add the SideMenu component */}
       <Routes>
         <Route
           path="/"
@@ -40,13 +41,12 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route path="/registerhealthpro" element={<RegisterHealthPro />} />
         <Route path="/notes" element={<Notes />} />
-
         <Route path="/availability" element={<HealthCareAvailability />} />
         <Route path="/appointments" element={<Appointments />} />
         <Route path="/viewrecords" element={<ViewPatientRecrods />} />
-        <Route path="/export/patient/excel" element={<ExportPatientsExcel />} />
-        <Route path="/export/patient/pdf" element={<ExportPatientsPDF />} />
+        <Route path="/export" element={<ExportPatients />} /> {/* Update the export route */}
         <Route path="/WriteRecords" element={<WriteRecords />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

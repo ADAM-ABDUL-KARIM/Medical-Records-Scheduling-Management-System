@@ -1,0 +1,95 @@
+/* Toolbar styles */
+.rbc-toolbar {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.rbc-toolbar button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.rbc-toolbar button:hover {
+    background-color: #0056b3;
+}
+
+/* Header styles */
+.rbc-header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Time slot styles */
+.rbc-time-slot {
+    border-bottom: 1px solid #dee2e6;
+    color: steelblue;
+}
+
+.rbc-month-view {
+    color: steelblue;
+}
+
+/* Event styles */
+.rbc-event {
+    background-color: steelblue;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.rbc-event:hover {
+    background-color: maroon;
+    transition: background-color 0.3s;
+}
+
+.rbc-event-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-height: 60px; /* Set a maximum height for the event content */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 5px;
+    font-size: 14px;
+}
+
+.rbc-event-content strong {
+    font-size: 16px;
+}
+
+.rbc-event-content span {
+    font-size: 14px;
+}
+
+/* Tooltip styles */
+.react-tooltip {
+    background-color: #333;
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+/* Month view styles */
+.rbc-month-view {
+    border: 1px solid #dee2e6;
+}
+
+/* Container styles */
+.calendar-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}

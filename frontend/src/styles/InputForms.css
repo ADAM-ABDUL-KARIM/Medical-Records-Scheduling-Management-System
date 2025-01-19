@@ -1,0 +1,127 @@
+.appointments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.form-and-availability {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.form-container {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.availabilities-container {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.availabilities-container h2 {
+    text-align: center;
+    color: steelblue;
+}
+
+.form-container h2 {
+    text-align: center;
+    color: steelblue;
+}
+
+.form-container label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: gray;
+}
+
+.form-container label:hover {
+    background-color: steelblue;
+    color: azure;
+    padding: 10px;
+    transition: ease 0.3s;
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+   
+    background-color: #fff;
+    background-size: 10px;
+}
+
+.form-container select:focus {
+    border-color: steelblue;
+    outline: none;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    background-color: steelblue;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.form-container button:hover {
+    background-color: slategray;
+}
+
+.availability-container {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.availability-container p {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.availability-container .delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.availability-container .delete-button:hover {
+    background-color: #ff1a1a;
+}
+
+.availabilities-container span{
+    color: steelblue;
+    font-weight: bolder;
+
+}

@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
 import api from "../api";
 import ViewRecord from "../components/ViewRecord";
+import "../styles/Record.css"; // Updated import
+import Pagination from "../components/Pagination";
 
 function ViewPatientRecords() {
     const [patients, setPatients] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 10; // Number of records to display per page
 
     useEffect(() => {
         getPatients();
@@ -50,19 +55,48 @@ function ViewPatientRecords() {
         }
     };
 
+    const filteredPatients = patients.filter(patient =>
+        `${patient.first_name} ${patient.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    // Pagination logic
+    const indexOfLastRecord = currentPage * recordsPerPage;
+    const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+    const currentRecords = filteredPatients.slice(indexOfFirstRecord, indexOfLastRecord);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
     return (
-        <div>
-            <h2>View Patient Records</h2>
+        <div className="view-patient-records">   
+        
+        <h1>View Patient Records</h1>
+            <input
+                type="text"
+                placeholder="Search by name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input"
+            />
             <div className="records-container">
-                {patients.map((patient) => (
-                    <ViewRecord
-                        key={patient.file_number}
-                        Record={patient}
-                        onDelete={deletePatient}
-                        onSave={savePatient}
-                    />
-                ))}
+                {currentRecords.length > 0 ? (
+                    currentRecords.map((patient) => (
+                        <ViewRecord
+                            key={patient.file_number}
+                            Record={patient}
+                            onDelete={deletePatient}
+                            onSave={savePatient}
+                        />
+                    ))
+                ) : (
+                    <p className="no-results">No records found</p>
+                )}
             </div>
+            <Pagination
+                recordsPerPage={recordsPerPage}
+                totalRecords={filteredPatients.length}
+                paginate={paginate}
+                currentPage={currentPage}
+            />
         </div>
     );
 }
