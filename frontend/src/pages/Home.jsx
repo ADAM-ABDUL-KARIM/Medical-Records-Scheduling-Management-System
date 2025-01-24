@@ -7,11 +7,12 @@ import NotesPng from "../assets/NotesPng.png";
 import writeRecord from "../assets/writeRecord.png";
 import appointmentIcon from "../assets/appointmentIcon.png";
 import availability from "../assets/availability.png";
-
 import Export from "../assets/Export.png";
 
 function Home() {
   const [username, setUsername] = useState("");
+
+
 
   useEffect(() => {
     getUserName();
@@ -22,7 +23,8 @@ function Home() {
       .get("/api/username/")
       .then((res) => res.data)
       .then((data) => {
-        setUsername(data.username); // Ensure only the username is set
+        setUsername(data.username);
+        // Set the isPatient state
         console.log(data);
       })
       .catch((error) => alert(error + " Failed to get username"));
@@ -33,7 +35,8 @@ function Home() {
       <h1 className="usernameWelcome">
         Welcome, <span className="steelbluespan">{username}</span>
       </h1>
-
+      
+     <h1 className="urpatient">You have admin <span className="steelbluespan">Privileges</span></h1>
       <div className="Home-ul">
         <div>
           <Link to="/writerecords">
@@ -57,7 +60,6 @@ function Home() {
             <span className="hiddenContainer">View Records</span>
           </Link>
         </div>
-
         <div>
           <Link to="/notes">
             <img src={NotesPng} alt="PatientList" width={150} height={150} />
@@ -86,7 +88,6 @@ function Home() {
             <span className="hiddenContainer">Availability</span>
           </Link>
         </div>
-
         <div>
           <Link to="/export">
             <img src={Export} alt="Export" width={150} height={150} />

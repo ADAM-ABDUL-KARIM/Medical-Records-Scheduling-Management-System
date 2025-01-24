@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
+import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "../styles/Calendar.css";
 import api from "../api";
-import { Tooltip as ReactTooltip } from "react-tooltip";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -19,14 +18,11 @@ function Event({ event }) {
       </strong>
       <br />
       <span>{event.healthpro_name}</span>
-      <ReactTooltip id={`tooltip-${event.id}`} place="top" effect="solid">
-        Right-click to delete this appointment
-      </ReactTooltip>
     </span>
   );
 }
 
-function AppointmentsCalendar() {
+function AppointmentsCalendar({ isPatient }) {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
@@ -37,8 +33,8 @@ function AppointmentsCalendar() {
     try {
       const res = await api.get("/api/appointment/");
       const data = res.data.map((appointment) => ({
-        title: `${appointment.patient_name}`,
-        healthpro_name: `${appointment.healthpro_details.healthcare_professional_name}`,
+        title: `${appointment.patient_name} `,
+        healthpro_name: `with ${appointment.healthpro_details.healthcare_professional_name}`,
         start: new Date(appointment.appointment_datetime),
         end: new Date(moment(appointment.appointment_datetime).add(1, "hour")),
         id: appointment.appointment_id,
@@ -50,7 +46,9 @@ function AppointmentsCalendar() {
   };
 
   const handleSelectEvent = (event) => {
-    confirmDelete(event.id, event.title);
+    if (!isPatient) {
+      confirmDelete(event.id, event.title);
+    }
   };
 
   const deleteAppointment = async (id) => {
@@ -84,7 +82,7 @@ function AppointmentsCalendar() {
   };
 
   return (
-    <div className="calendar-container">
+    <div className={`calendar-container ${isPatient ? 'patient-view' : ''}`}>
       <h2>Appointments Calendar</h2>
       <Calendar
         localizer={localizer}
@@ -98,7 +96,6 @@ function AppointmentsCalendar() {
         }}
         views={["month", "week", "day"]} // Exclude the agenda view
       />
-      <ReactTooltip />
     </div>
   );
 }

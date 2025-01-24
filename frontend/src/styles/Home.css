@@ -12,9 +12,17 @@
   color: #44546a;
   z-index: 1000;
 }
-
+.urpatient {
+  position: fixed;
+  top: 50px;
+  left: 10px;
+  font-size: 25px;
+  font-weight: bold;
+  color: #44546a;
+  z-index: 1000;
+  
+}
 .Home-ul {
-
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -32,22 +40,18 @@
 }
 .Home-ul div:hover {
   scale: 1.2;
- 
   transition: ease 0.3s;
-
 }
-.Home-ul div a:hover img{
+.Home-ul div a:hover img {
   opacity: 0.3;
 }
-.Home-ul div a:hover .hiddenContainer{
+.Home-ul div a:hover .hiddenContainer {
   display: inline-block;
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 1;
-
-
 }
-.hiddenContainer{
-font-weight: bold;
+.hiddenContainer {
+  font-weight: bold;
   background-color: #44546a;
   padding: 10px;
   width: 200px;
@@ -60,7 +64,6 @@ font-weight: bold;
   left: 50%;
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  
 }
 .Home-ul div {
   display: flex;
@@ -70,11 +73,7 @@ font-weight: bold;
   width: 300px;
   height: 200px;
   position: relative;
-
   box-shadow: #44546a 0 0 5px;
   font-family: "montreal";
   overflow: hidden; /* Hide overflow content */
 }
-
-
-  

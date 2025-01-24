@@ -6,6 +6,7 @@ import jwtDecode from "jwt-decode";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 function ProtectedRoute({ children }) {
   // first step to check if authorized to access this route-otherwise log in before using this
@@ -64,14 +65,3 @@ function ProtectedRoute({ children }) {
 }
 
 export default ProtectedRoute;
-
-// Remove the ProtectedRoute component or modify it to always allow access
-
-// import { Navigate } from "react-router-dom";
-
-// function ProtectedRoute({ children }) {
-//     // Always allow access
-//     return children;
-// }
-
-// export default ProtectedRoute;

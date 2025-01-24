@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import api from "../api";
 import Availability from "../components/Availability";
 import "../styles/InputForms.css";
+import BackArrow from "../components/BackArrow";
 
-function HealthCareAvailability() {
+function HealthCareAvailability({isPatient}) {
   const [selectedHealthCareProfessional, setSelectedHealthCareProfessional] =
     useState("");
   const [selectedStartTime, setStartTime] = useState("");
@@ -66,6 +67,8 @@ function HealthCareAvailability() {
 
   return (
     <div className="healthcare-availability-container">
+       {isPatient && <BackArrow />}
+       {!isPatient && (
       <div className="form-container">
         <h2>Set Healthcare Professional Availability</h2>
         <form onSubmit={createAvailability}>
@@ -107,10 +110,12 @@ function HealthCareAvailability() {
           <button type="submit">Submit</button>
         </form>
       </div>
+)}
       <div className="availabilities-container">
         <h2>Availabilities</h2>
         {availabilities.map((availability) => (
           <Availability
+          isPatient = {isPatient}
             availability={availability}
             key={availability.availability_id}
             onDelete={deleteAvailability}

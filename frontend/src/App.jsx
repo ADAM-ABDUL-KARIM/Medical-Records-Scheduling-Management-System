@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -7,12 +7,15 @@ import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import WriteRecords from "./pages/WriteRecords";
 import Appointments from "./pages/Appointments";
-import ViewPatientRecrods from "./pages/ViewPatientRecrods";
+import ViewPatientRecords from "./pages/ViewPatientRecords";
 import HealthCareAvailability from "./pages/HealthCareAvailability";
-import SideMenu from "./components/SideMenu"; // Import the SideMenu component
+import SideMenu from "./components/SideMenu";
 import Notes from "./pages/Notes";
 import RegisterHealthPro from "./pages/RegisterHealthPro";
-import ExportPatients from "./pages/ExportPatients"; // Import the unified export page
+import ExportPatients from "./pages/ExportPatients";
+import PatientDashboard from "./pages/PatientDashboard"; 
+import ProfileIcon from "./components/ProfileIcon"; 
+import api from "./api";
 
 function Logout() {
   localStorage.clear();
@@ -25,28 +28,61 @@ function RegisterandLogout() {
 }
 
 function AppContent() {
-  // hide side menu in log in and register pages
   const location = useLocation();
-  const hideSideMenu = location.pathname === "/login/" || location.pathname === "/register" || location.pathname === "/register/" || location.pathname === "/login" || location.pathname === "/";
+  const [isPatient, setIsPatient] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getUserRole();
+  }, []);
+
+  const getUserRole = () => {
+    api
+      .get("/api/username/")
+      .then((res) => res.data)
+      .then((data) => {
+        setIsPatient(data.is_patient);
+        setLoading(false); // Set loading to false after getting the user role
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false); // Set loading to false even if there's an error
+      });
+  };
+
+  const hideSideMenu = 
+    location.pathname === "/login/" || 
+    location.pathname === "/register" || 
+    location.pathname === "/register/" || 
+    location.pathname === "/login" || 
+    location.pathname === "/" || 
+    (isPatient && ["/viewrecords", "/appointments", "/availability","/notes"].includes(location.pathname));
+
+  const hideProfileIcon = location.pathname === "/login/" || location.pathname === "/register" || location.pathname === "/register/" || location.pathname === "/login";
+
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading indicator while fetching the user role
+  }
 
   return (
     <>
-      {!hideSideMenu && <SideMenu />} {/* Add the SideMenu component */}
+      {!hideSideMenu && <SideMenu />}
+      {!hideProfileIcon && <ProfileIcon />} 
       <Routes>
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              <Home />
+              {isPatient ? <PatientDashboard /> : <Home />}
             </ProtectedRoute>
           }
         />
         <Route path="/registerhealthpro" element={<RegisterHealthPro />} />
-        <Route path="/notes" element={<Notes />} />
-        <Route path="/availability" element={<HealthCareAvailability />} />
-        <Route path="/appointments" element={<Appointments />} />
-        <Route path="/viewrecords" element={<ViewPatientRecrods />} />
-        <Route path="/export" element={<ExportPatients />} /> {/* Update the export route */}
+        <Route path="/notes" element={<Notes isPatient={isPatient} />} />
+        <Route path="/availability" element={<HealthCareAvailability isPatient={isPatient} />} />
+        <Route path="/appointments" element={<Appointments isPatient={isPatient} />} />
+        <Route path="/viewrecords" element={<ViewPatientRecords isPatient={isPatient} />} />
+        <Route path="/export" element={<ExportPatients />} />
         <Route path="/WriteRecords" element={<WriteRecords />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />

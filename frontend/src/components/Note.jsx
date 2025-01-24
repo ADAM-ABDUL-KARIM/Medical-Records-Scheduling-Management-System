@@ -3,7 +3,7 @@ import "../styles/Note.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-function Note({ note, onDelete }) {
+function Note({ note, onDelete, isPatient }) {
   const formattedDate = new Date(note.note_date).toLocaleDateString("en-US");
 
   const handleDeleteClick = () => {
@@ -45,9 +45,11 @@ function Note({ note, onDelete }) {
       <p className="note-content">
         <span>Note:</span> {note.note_content}
       </p>
-      <button className="delete-button" onClick={handleDeleteClick}>
-        Delete
-      </button>
+      {!isPatient && (
+        <button className="delete-button" onClick={handleDeleteClick}>
+          Delete
+        </button>
+      )}
     </div>
   );
 }

@@ -1,7 +1,8 @@
+
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import *
-
+from django.contrib.auth.models import Group
 class RoleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Role
@@ -10,8 +11,10 @@ class RoleSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "password"]
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ['username', 'password', 'is_superuser']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
@@ -55,6 +58,10 @@ class PatientSerializer(serializers.ModelSerializer):
         diagnosis_data = validated_data.pop('diagnosis', [])
         medication_data = validated_data.pop('medication', [])
         patient = Patient.objects.create(user=user, **validated_data)
+
+        # Assign the user to the "Patient" group
+        patient_group, created = Group.objects.get_or_create(name='Patient')
+        user.groups.add(patient_group)
 
         for diag in diagnosis_data:
             Diagnosis.objects.create(patient=patient, **diag)

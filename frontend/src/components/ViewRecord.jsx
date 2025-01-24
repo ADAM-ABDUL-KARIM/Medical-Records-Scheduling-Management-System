@@ -3,7 +3,7 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "../styles/Record.css";
 
-function ViewRecord({ Record, onDelete, onSave }) {
+function ViewRecord({ Record, onDelete, onSave, isPatient }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedRecord, setEditedRecord] = useState({ ...Record });
   const [isExpanded, setIsExpanded] = useState(false);
@@ -110,7 +110,6 @@ function ViewRecord({ Record, onDelete, onSave }) {
         <p className="rec-title">
           {Record.first_name} {Record.last_name}
         </p>
-
         <span className="arrow">{isExpanded ? "▲" : "▼"}</span>
       </div>
       <div
@@ -346,14 +345,21 @@ function ViewRecord({ Record, onDelete, onSave }) {
               <b>Medication:</b>{" "}
               {Record.medication.map((m) => m.medication_name).join(", ")}
             </p>
-            <button className="edit-button" onClick={() => setIsEditing(true)}>
-              Edit
-            </button>
+            {!isPatient && (
+              <>
+                <button
+                  className="edit-button"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Edit
+                </button>
+                <button className="delete-button" onClick={handleDeleteClick}>
+                  Delete
+                </button>
+              </>
+            )}
           </>
         )}
-        <button className="delete-button" onClick={handleDeleteClick}>
-          Delete
-        </button>
       </div>
     </div>
   );

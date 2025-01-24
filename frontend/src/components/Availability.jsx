@@ -2,7 +2,7 @@ import "../styles/InputForms.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-function Availability({ availability, onDelete, showDeleteButton = true }) {
+function Availability({ availability, onDelete, isPatient, showDeleteButton = true }) {
   const handleDeleteClick = (e) => {
     e.stopPropagation();
     confirmAlert({
@@ -44,7 +44,7 @@ function Availability({ availability, onDelete, showDeleteButton = true }) {
       <p>
         <span>Availability End Time:</span> {availability.end_time}
       </p>
-      {showDeleteButton && (
+      {!isPatient && showDeleteButton && (
         <button className="delete-button" onClick={handleDeleteClick}>
           Delete
         </button>

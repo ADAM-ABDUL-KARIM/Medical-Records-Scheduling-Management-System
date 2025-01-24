@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import api from "../api";
 import Note from "../components/Note";
 import "../styles/Notes.css";
+import BackArrow from "../components/BackArrow";
 
-function Notes() {
+function Notes({ isPatient }) {
   const [notes, setNotes] = useState([]);
   const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -11,25 +12,14 @@ function Notes() {
   const [selectedAppointment, setSelectedAppointment] = useState("");
   const [noteContent, setNoteContent] = useState("");
   const [noteDate, setNoteDate] = useState("");
-  const [username, setUsername] = useState("");
 
   useEffect(() => {
     getNotes();
-    getPatients();
-    getAppointments();
-    getUserName();
-  }, []);
-
-  const getUserName = () => {
-    api
-      .get("/api/username/")
-      .then((res) => res.data)
-      .then((data) => {
-        setUsername(data.username); // Ensure only the username is set
-        console.log(data);
-      })
-      .catch((error) => alert(error + " Failed to get username"));
-  };
+    if (!isPatient) {
+      getPatients();
+      getAppointments();
+    }
+  }, [isPatient]);
 
   const getNotes = () => {
     api
@@ -96,74 +86,81 @@ function Notes() {
 
   return (
     <div>
-      <div>
-        <h2>Notes</h2>
-        {notes.map((note) => (
-          <Note note={note} onDelete={deleteNote} key={note.note_id} />
-        ))}
-      </div>
-      <h2>Create a Note</h2>
-      <form onSubmit={createNote}>
-        <label htmlFor="patient">Patient:</label>
-        <br />
-        <select
-          id="patient"
-          name="patient"
-          required
-          onChange={(e) => setSelectedPatient(e.target.value)}
-          value={selectedPatient}
-        >
-          <option value="">Select a patient</option>
-          {patients.map((patient) => (
-            <option key={patient.file_number} value={patient.file_number}>
-              {patient.first_name} {patient.last_name}
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="appointment">Appointment:</label>
-        <br />
-        <select
-          id="appointment"
-          name="appointment"
-          required
-          onChange={(e) => setSelectedAppointment(e.target.value)}
-          value={selectedAppointment}
-        >
-          <option value="">Select an appointment</option>
-          {appointments.map((appointment) => (
-            <option
-              key={appointment.appointment_id}
-              value={appointment.appointment_id}
+      {isPatient && <BackArrow />}
+      <h2>Notes</h2>
+      {notes.length > 0 ? (
+        notes.map((note) => (
+          <Note isPatient={isPatient} note={note} onDelete={deleteNote} key={note.note_id} />
+        ))
+      ) : (
+        <p>No notes found</p>
+      )}
+      {!isPatient && (
+        <>
+          <h2>Create a Note</h2>
+          <form onSubmit={createNote}>
+            <label htmlFor="patient">Patient:</label>
+            <br />
+            <select
+              id="patient"
+              name="patient"
+              required
+              onChange={(e) => setSelectedPatient(e.target.value)}
+              value={selectedPatient}
             >
-              {appointment.appointment_datetime}
-            </option>
-          ))}
-        </select>
-        <br />
-        <label htmlFor="note_date">Date:</label>
-        <br />
-        <input
-          type="date"
-          id="note_date"
-          name="note_date"
-          required
-          onChange={(e) => setNoteDate(e.target.value)}
-          value={noteDate}
-        />
-        <br />
-        <label htmlFor="content">Content:</label>
-        <br />
-        <textarea
-          name="content"
-          id="content"
-          required
-          value={noteContent}
-          onChange={(e) => setNoteContent(e.target.value)}
-        ></textarea>
-        <br />
-        <input type="submit" value="Submit" />
-      </form>
+              <option value="">Select a patient</option>
+              {patients.map((patient) => (
+                <option key={patient.file_number} value={patient.file_number}>
+                  {patient.first_name} {patient.last_name}
+                </option>
+              ))}
+            </select>
+            <br />
+            <label htmlFor="appointment">Appointment:</label>
+            <br />
+            <select
+              id="appointment"
+              name="appointment"
+              required
+              onChange={(e) => setSelectedAppointment(e.target.value)}
+              value={selectedAppointment}
+            >
+              <option value="">Select an appointment</option>
+              {appointments.map((appointment) => (
+                <option
+                  key={appointment.appointment_id}
+                  value={appointment.appointment_id}
+                >
+                  {appointment.appointment_datetime}
+                </option>
+              ))}
+            </select>
+            <br />
+            <label htmlFor="note_date">Date:</label>
+            <br />
+            <input
+              type="date"
+              id="note_date"
+              name="note_date"
+              required
+              onChange={(e) => setNoteDate(e.target.value)}
+              value={noteDate}
+            />
+            <br />
+            <label htmlFor="content">Content:</label>
+            <br />
+            <textarea
+              name="content"
+              id="content"
+              required
+              value={noteContent}
+              onChange={(e) => setNoteContent(e.target.value)}
+            ></textarea>
+            <br />
+            <input type="submit" value="Submit" />
+          </form>
+        </>
+      )}
     </div>
   );
 }
