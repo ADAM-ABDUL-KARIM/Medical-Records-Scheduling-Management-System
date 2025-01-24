@@ -67,7 +67,7 @@ function AppContent() {
   return (
     <>
       {!hideSideMenu && <SideMenu />}
-      {!hideProfileIcon && <ProfileIcon />} 
+      {!hideProfileIcon && <ProfileIcon isPatient={isPatient} />} 
       <Routes>
         <Route
           path="/"

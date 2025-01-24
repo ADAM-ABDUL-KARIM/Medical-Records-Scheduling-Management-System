@@ -18,7 +18,15 @@
   border-radius: 4px;
   box-sizing: border-box;
 }
-
+.alreadyhaveanaccount a{
+  text-decoration: none;
+  color: #44546a;
+  font-weight: bold;
+}
+.alreadyhaveanaccount a:hover{
+  scale: 1.2;
+  color: steelblue;
+}
 .form-button {
   width: 95%;
   padding: 10px;

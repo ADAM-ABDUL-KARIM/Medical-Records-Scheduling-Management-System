@@ -1,24 +1,23 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
-
+import "../styles/Form.css"
 function Form({ route, method }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [isSuperuser, setIsSuperuser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  const name = method === "login" ? "Login" : "Register an Admin";
+  const name = method === "login" ? "Login" : "Register a Superuser (Admin) ";
 
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
 
     try {
-      const res = await api.post(route, { username, password, is_superuser: isSuperuser });
+      const res = await api.post(route, { username, password, is_superuser: true });
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
@@ -67,22 +66,18 @@ function Form({ route, method }) {
         placeholder="Password"
         required
       />
-      {method === "register" && (
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={isSuperuser}
-              onChange={(e) => setIsSuperuser(e.target.checked)}
-            />
-            Register as Superuser
-          </label>
-        </div>
-      )}
       {loading && <div>Loading...</div>}
       <button className="form-button" type="submit">
         {name}
       </button>
+      {method === "register" && (
+        <p className="alreadyhaveanaccount">
+          Already have an account? <Link to="/login">Login here</Link>
+        </p>
+         
+      )}
+     
+      
     </form>
   );
 }
