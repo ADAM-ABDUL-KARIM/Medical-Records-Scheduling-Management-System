@@ -13,7 +13,7 @@ from rest_framework.views import *
 
 class HealthcareProfessionalRetrieve (generics.ListCreateAPIView):
     serializer_class = HealthCareProfessionalSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
         return HealthCareProfessional.objects.all()

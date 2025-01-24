@@ -10,7 +10,9 @@ urlpatterns = [
       path("patient/delete/<int:pk>/",views.PatientDelete.as_view(),),
         path("availability/delete/<int:pk>/",views.AvailabilityDelete.as_view(),),
      path("healthpro/",views.HealthcareProfessionalRetrieve.as_view(),),
-     path("healthpro/<int:pk>",views.HealthcareProfessionalRetrieve.as_view(),),
+     path("healthpro/<int:pk>/",views.HealthcareProfessionalRetrieve.as_view(),),
+     
+     
      path("availability/",views.AvailabilityView.as_view(),),
           path("appointment/",views.AppointmentCreate.as_view(),),
      path("appointment/delete/<int:pk>/",views.AppointmentDelete.as_view(),),

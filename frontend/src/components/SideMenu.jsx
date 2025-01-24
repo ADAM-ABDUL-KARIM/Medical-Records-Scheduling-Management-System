@@ -31,24 +31,24 @@ function SideMenu() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/notes">Notes</Link>
+            <Link to="/writerecords">Write Patient Record</Link>
           </li>
           <li>
             <Link to="/viewrecords">View Records</Link>
           </li>
           <li>
-            <Link to="/writerecords">Write Records</Link>
-          </li>
-          <li>
             <Link to="/registerhealthpro">
               Register Healthcare Professional
             </Link>
-          </li>
+          </li>      
           <li>
             <Link to="/appointments">Appointments</Link>
           </li>
           <li>
             <Link to="/availability">Availability</Link>
+          </li>
+          <li>
+            <Link to="/notes">Notes</Link>
           </li>
           <li>
             <Link to="/export">Export Patients</Link>

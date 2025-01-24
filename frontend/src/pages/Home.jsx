@@ -29,7 +29,7 @@ function Home() {
   };
 
   return (
-    <>
+    <div className="wrapper-home">
       <h1 className="usernameWelcome">
         Welcome, <span className="steelbluespan">{username}</span>
       </h1>
@@ -94,7 +94,7 @@ function Home() {
           </Link>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

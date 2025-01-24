@@ -9,15 +9,15 @@ function WriteRecords() {
   const [lastName, setLastName] = useState("Doe");
   const [dateOfBirth, setDateOfBirth] = useState("2000-01-01");
   const [nationality, setNationality] = useState("Lebanese");
-  const [address, setAddress] = useState("Default Address");
+  const [address, setAddress] = useState("123 Main Street");
   const [maritalStatus, setMaritalStatus] = useState("Single");
-  const [phoneNumber, setPhoneNumber] = useState("1234567890");
+  const [phoneNumber, setPhoneNumber] = useState("12345678");
   const [gender, setGender] = useState("Male");
   const [height, setHeight] = useState("170");
   const [educationalLevel, setEducationalLevel] = useState("Bachelor's");
   const [employmentStatus, setEmploymentStatus] = useState("Employed");
   const [dominantHand, setDominantHand] = useState("Right");
-  const [startDate, setStartDate] = useState("2023-01-01");
+  const [startDate, setStartDate] = useState("2025-01-01");
   const [activityLevel, setActivityLevel] = useState("Active");
   const [isRecovered, setIsRecovered] = useState(false);
   const [diagnosis, setDiagnosis] = useState(["Default Diagnosis"]);
@@ -186,13 +186,17 @@ function WriteRecords() {
             </div>
             <div>
               <label htmlFor="maritalStatus">Marital Status:</label>
-              <input
-                type="text"
+              <select
                 id="maritalStatus"
                 value={maritalStatus}
                 onChange={(e) => setMaritalStatus(e.target.value)}
                 required
-              />
+              >
+                <option value="Single">Single</option>
+                <option value="Divorced">Divorced</option>
+                <option value="Widowed">Widowed</option>
+                <option value="Married">Married</option>
+              </select>
             </div>
             <div>
               <label htmlFor="phoneNumber">Phone Number:</label>
@@ -206,13 +210,15 @@ function WriteRecords() {
             </div>
             <div>
               <label htmlFor="gender">Gender:</label>
-              <input
-                type="text"
+              <select
                 id="gender"
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
                 required
-              />
+              >
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
             </div>
             <div>
               <label htmlFor="height">Height (cm):</label>
@@ -228,33 +234,53 @@ function WriteRecords() {
             </div>
             <div>
               <label htmlFor="educationalLevel">Educational Level:</label>
-              <input
-                type="text"
-                id="educationalLevel"
-                value={educationalLevel}
-                onChange={(e) => setEducationalLevel(e.target.value)}
-                required
-              />
+              <select
+              id="educationalLevel"
+              onChange={(e)=> setEducationalLevel(e.target.value)}
+              required
+              value={educationalLevel}
+              >
+               <option value="No formal education">No formal education</option>
+                <option value="Primary education">Primary education</option>
+                <option value="Secondary education">Secondary education or high school</option>
+               
+                <option value="Bachelor's degree">Bachelor&apos;s degree</option>
+                <option value="Master's degree">Master&apos;s degree</option>
+                <option value="Doctorate or higher">Doctorate or higher</option>
+
+
+              </select>
             </div>
             <div>
               <label htmlFor="employmentStatus">Employment Status:</label>
-              <input
-                type="text"
-                id="employmentStatus"
-                value={employmentStatus}
-                onChange={(e) => setEmploymentStatus(e.target.value)}
-                required
-              />
+              <select
+              id="employmnetStatus"
+              value={employmentStatus}
+              onChange={(e) => setEmploymentStatus(e.target.value)}
+              required
+
+              >
+                <option value="Employed">Employed</option>
+                <option value="Uemployed">Uemployed</option>
+                <option value="Student">Student</option>
+                <option value="Retired">Retired</option>
+                <option value="Unable to work">Unable to work</option>
+                
+
+              </select>
             </div>
             <div>
               <label htmlFor="dominantHand">Dominant Hand:</label>
-              <input
-                type="text"
+              <select
                 id="dominantHand"
                 value={dominantHand}
                 onChange={(e) => setDominantHand(e.target.value)}
                 required
-              />
+              >
+                <option value="Right">Right</option>
+                <option value="Left">Left</option>
+                <option value="Both">Both</option>
+              </select>
             </div>
             <div>
               <label htmlFor="startDate">Start Date:</label>
@@ -268,16 +294,19 @@ function WriteRecords() {
             </div>
             <div>
               <label htmlFor="activityLevel">Activity Level:</label>
-              <input
-                type="text"
+              <select
                 id="activityLevel"
                 value={activityLevel}
                 onChange={(e) => setActivityLevel(e.target.value)}
                 required
-              />
+              >
+                <option value="Sedentary">Sedentary</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Vigorous">Vigorous</option>
+              </select>
             </div>
             <div>
-              <label htmlFor="isRecovered">Is Recovered:</label>
+              <label htmlFor="isRecovered">Recovered:</label>
               <input
                 type="checkbox"
                 id="isRecovered"

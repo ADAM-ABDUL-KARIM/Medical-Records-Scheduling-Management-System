@@ -34,6 +34,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
   padding: 20px;
   max-width: 1200px;
   width: 100%;
@@ -56,7 +57,9 @@ h1 {
   transition: ease-in-out 0.3s;
   color: whitesmoke;
 }
-
+.rec-container:hover .rec-title{
+  color: azure;
+}
 /* Header styles */
 .rec-header {
   display: flex;
@@ -68,7 +71,9 @@ h1 {
 .rec-title {
   font-size: 18px;
   font-weight: bold;
+  color: steelblue;
 }
+
 
 .arrow {
   font-size: 18px;
@@ -249,7 +254,7 @@ h1 {
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   box-sizing: border-box;
   background-color: #fff;
 }
@@ -257,7 +262,7 @@ h1 {
 .write-records-form input:focus,
 .write-records-form select:focus {
   border-color: steelblue;
-  outline: none;
+  outline:none;
 }
 
 .write-records-form button,
@@ -300,6 +305,10 @@ h1 {
 .dynamic-field input {
   flex: 1;
   margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .add-button {
@@ -311,8 +320,7 @@ h1 {
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
 }
-.add-button:hover {
-}
+
 .remove-button {
   background-color: #ff4d4d;
   color: white;
@@ -321,6 +329,7 @@ h1 {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  margin-left: 10px;
 }
 
 .remove-button:hover {

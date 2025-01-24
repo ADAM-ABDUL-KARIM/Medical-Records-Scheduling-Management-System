@@ -2,6 +2,7 @@ import { useState } from "react";
 import api from "../api";
 
 function RegisterHealthPro() {
+  
   const [username, setUsername] = useState("defaultUsername");
   const [password, setPassword] = useState("defaultPassword");
   const [firstName, setFirstName] = useState("John");
@@ -48,7 +49,7 @@ function RegisterHealthPro() {
       <h2>Register a Healthcare Professional</h2>
 
       <form onSubmit={createHealthPro} className="write-records-form">
-        {/* User Details */}
+        
         <fieldset>
           <legend>User Details</legend>
 
