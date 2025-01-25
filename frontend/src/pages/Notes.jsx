@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import api from "../api";
 import Note from "../components/Note";
 import "../styles/Notes.css";
+import Pagination from "../components/Pagination";
 import BackArrow from "../components/BackArrow";
 
 function Notes({ isPatient }) {
@@ -12,26 +14,31 @@ function Notes({ isPatient }) {
   const [selectedAppointment, setSelectedAppointment] = useState("");
   const [noteContent, setNoteContent] = useState("");
   const [noteDate, setNoteDate] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 5; // Number of records to display per page
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getNotes();
+    const searchParams = new URLSearchParams(location.search);
+    const page = parseInt(searchParams.get("page")) || 1;
+    setCurrentPage(page);
+    getNotes(page);
     if (!isPatient) {
       getPatients();
       getAppointments();
     }
-  }, [isPatient]);
+  }, [location.search, isPatient]);
 
-  const getNotes = () => {
-    api
-      .get("/api/notes/")
-      .then((res) => res.data)
-      .then((data) => {
-        setNotes(data);
-        console.log(data);
-      })
-      .catch((err) =>
-        alert(err + " Refresh your Token - log in again with your credentials")
-      );
+  const getNotes = async (page) => {
+    try {
+      const res = await api.get(`/api/notes/?page=${page}`);
+      setNotes(res.data);
+      console.log(res.data);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const getPatients = () => {
@@ -56,15 +63,18 @@ function Notes({ isPatient }) {
       .catch((err) => alert(err));
   };
 
-  const deleteNote = (id) => {
-    api
-      .delete(`/api/notes/delete/${id}/`)
-      .then((res) => {
-        if (res.status === 204) alert("Note Deleted");
-        else alert("Failed to delete note");
-        getNotes();
-      })
-      .catch((error) => alert(error));
+  const deleteNote = async (id) => {
+    try {
+      const res = await api.delete(`/api/notes/delete/${id}/`);
+      if (res.status === 204) {
+        alert("Note Deleted");
+        getNotes(currentPage);
+      } else {
+        alert("Failed to delete note");
+      }
+    } catch (error) {
+      alert(error);
+    }
   };
 
   const createNote = (e) => {
@@ -79,26 +89,64 @@ function Notes({ isPatient }) {
       .then((res) => {
         if (res.status === 201) alert("Note created");
         else alert("Failed to create note");
-        getNotes();
+        getNotes(currentPage);
       })
       .catch((err) => alert(err));
   };
 
+  const filteredNotes = notes.filter((note) =>
+    note.patient_name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Pagination logic
+  const indexOfLastRecord = currentPage * recordsPerPage;
+  const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  const currentRecords = filteredNotes.slice(indexOfFirstRecord, indexOfLastRecord);
+
+  const paginate = (pageNumber) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", pageNumber);
+    navigate(`${location.pathname}?${searchParams.toString()}`);
+  };
+
   return (
-    <div>
+    <div className="view-notes">
       {isPatient && <BackArrow />}
-      <h2>Notes</h2>
-      {notes.length > 0 ? (
-        notes.map((note) => (
-          <Note isPatient={isPatient} note={note} onDelete={deleteNote} key={note.note_id} />
-        ))
-      ) : (
-        <p>No notes found</p>
+      
+      <h1>Patient Notes</h1>
+      {!isPatient && (
+        <input
+          type="text"
+          placeholder="Search by patient name"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
       )}
+      <div className="notes-container">
+        {currentRecords.length > 0 ? (
+          currentRecords.map((note) => (
+            <Note
+              isPatient={isPatient}
+              key={note.note_id}
+              note={note}
+              onDelete={deleteNote}
+            />
+          ))
+        ) : (
+          <p className="no-results">No notes found</p>
+        )}
+      </div>
+      <Pagination
+        recordsPerPage={recordsPerPage}
+        totalRecords={filteredNotes.length}
+        currentPage={currentPage}
+        paginate={paginate}
+      />
       {!isPatient && (
         <>
           <h2>Create a Note</h2>
-          <form onSubmit={createNote}>
+          <form onSubmit={createNote} className="noteForm">
             <label htmlFor="patient">Patient:</label>
             <br />
             <select

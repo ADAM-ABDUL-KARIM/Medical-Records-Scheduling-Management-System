@@ -6,16 +6,29 @@
   background-color: #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease;
+  overflow: hidden;
 }
 
 .note-container:hover {
-  background-color: #f4f4f4;
+  background-color: steelblue;
+  color: azure;
 }
+.note-container:hover p {
+color: azure;
+}
+.note-container:hover span {
+  color: azure;
+  }
 .note-container p span{
 color: steelblue;
 font-weight: bolder;
 }
-
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
 
 .note-content {
   color: #44546A;
@@ -39,5 +52,25 @@ font-weight: bolder;
 }
 
 .delete-button:hover {
-  background-color: #ff1a1a; /* Darker red for hover effect */
+  background-color: maroon; 
+}
+.note-title {
+  color: #44546A;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.arrow {
+  font-size: 18px;
+}
+
+.note-details {
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.note-details.expanded {
+  height: auto;
 }

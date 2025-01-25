@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
 import "../styles/Export.css";
-
-function ExportPatients() {
+import BackArrow from "../components/BackArrow";
+function ExportPatients({isPatient}) {
   const [patients, setPatients] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState("");
   const [exportFormat, setExportFormat] = useState("pdf");
@@ -55,6 +55,7 @@ function ExportPatients() {
 
   return (
     <div className="export-container">
+      {isPatient && <BackArrow />}
       <h2>Export Patients</h2>
       <select
         value={selectedPatient}

@@ -1,11 +1,38 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../styles/Note.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 function Note({ note, onDelete, isPatient }) {
-  const formattedDate = new Date(note.note_date).toLocaleDateString("en-US");
+  const [isExpanded, setIsExpanded] = useState(false);
+  const detailsRef = useRef(null);
 
+  useEffect(() => {
+    if (isExpanded) {
+      detailsRef.current.style.height = `${detailsRef.current.scrollHeight}px`;
+    } else {
+      detailsRef.current.style.height = "0px";
+    }
+  }, [isExpanded]);
+
+  const formattedDate = new Date(note.note_date).toLocaleDateString("en-US", {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  const formattedTime = new Date(note.note_date).toLocaleTimeString("en-US", {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  const formatAPP = new Date(note.appointment_details.appointment_datetime).toLocaleDateString("en-US", {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
   const handleDeleteClick = () => {
     confirmAlert({
       title: "Confirm to delete",
@@ -24,32 +51,34 @@ function Note({ note, onDelete, isPatient }) {
   };
 
   return (
+   
     <div className="note-container">
-      <p className="note-content">
-        <span>Patient:</span> {note.patient_name}
-      </p>
-      <p className="note-content">
-        <span>Appointment Date:</span>{" "}
-        {note.appointment_details.appointment_datetime}
-      </p>
-      <p className="note-content">
-        <span>Healthcare Professional:</span>{" "}
-        {note.appointment_details.healthcare_professional_name}
-      </p>
-      <p className="note-content">
-        <span>Added by:</span> {note.added_by}
-      </p>
-      <p className="note-content">
-        <span>Added On:</span> {formattedDate}
-      </p>
-      <p className="note-content">
-        <span>Note:</span> {note.note_content}
-      </p>
-      {!isPatient && (
-        <button className="delete-button" onClick={handleDeleteClick}>
-          Delete
-        </button>
-      )}
+      
+      <div className="note-header" onClick={() => setIsExpanded(!isExpanded)}>
+        <p className="note-title">
+          {note.patient_name} - {formatAPP} with {note.appointment_details.healthcare_professional_name}
+        </p>
+        <span className="arrow">{isExpanded ? "▲" : "▼"}</span>
+      </div>
+      <div className={`note-details ${isExpanded ? "expanded" : ""}`} ref={detailsRef}>
+        <p className="note-content">
+          <span>Appointment Date:</span> {note.appointment_details.appointment_datetime}
+        </p>
+        <p className="note-content">
+          <span>Healthcare Professional:</span> {note.appointment_details.healthcare_professional_name}
+        </p>
+        <p className="note-content">
+          <span>Added by:</span> {note.added_by}
+        </p>
+        <p className="note-content">
+          <span>Note:</span> {note.note_content}
+        </p>
+        {!isPatient && (
+          <button className="delete-button" onClick={handleDeleteClick}>
+            Delete
+          </button>
+        )}
+      </div>
     </div>
   );
 }

@@ -42,9 +42,6 @@
   scale: 1.2;
   transition: ease 0.3s;
 }
-.Home-ul div a:hover img {
-  opacity: 0.3;
-}
 .Home-ul div a:hover .hiddenContainer {
   display: inline-block;
   transition: opacity 0.3s ease, transform 0.3s ease;

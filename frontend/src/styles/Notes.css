@@ -41,6 +41,23 @@ div {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
+.noteForm{
+  width: 500px;
+
+}
+.noteForm label {
+  color: steelblue;
+}
+.noteForm select{
+  border-radius: 10px;
+  padding: 3px;
+  margin: 5px;
+
+}
+.noteForm option{
+ color: #44546A;
+ background-color: white;
+}
 
 .note:hover {
   background-color: #f4f4f4;
@@ -65,20 +82,8 @@ div {
   margin-bottom: 10px;
 }
 
-.delete-button {
-  background-color: #ff4d4d; /* Consistent with other delete buttons */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
 
-.delete-button:hover {
-  background-color: #ff1a1a; /* Darker red for hover effect */
-  transform: scale(1.05);
-}
+
 
 /* Styles for the form section */
 form {

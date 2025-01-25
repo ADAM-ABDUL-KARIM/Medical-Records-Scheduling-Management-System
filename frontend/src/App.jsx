@@ -93,7 +93,19 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-        <Route
+       
+        {/* Patient-specific routes */}
+        <Route path="/appointments" element={<ProtectedRoute><Appointments isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/viewrecords" element={<ProtectedRoute><ViewPatientRecords isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/availability" element={<ProtectedRoute><HealthCareAvailability isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/notes" element={<ProtectedRoute><Notes isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/export" element={<ProtectedRoute><ExportPatients isPatient={isPatient} /></ProtectedRoute>} />
+        {/* Admin-specific routes */}
+        {!isPatient && (
+          <>
+            <Route path="/writerecords" element={<ProtectedRoute><WriteRecords /></ProtectedRoute>} />
+            <Route path="/registerhealthpro" element={<ProtectedRoute><RegisterHealthPro /></ProtectedRoute>} />
+            <Route
           path="/analytics"
           element={
             <ProtectedRoute>
@@ -101,18 +113,6 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
-        {/* Patient-specific routes */}
-        <Route path="/appointments" element={<ProtectedRoute><Appointments isPatient={isPatient} /></ProtectedRoute>} />
-        <Route path="/viewrecords" element={<ProtectedRoute><ViewPatientRecords isPatient={isPatient} /></ProtectedRoute>} />
-        <Route path="/availability" element={<ProtectedRoute><HealthCareAvailability isPatient={isPatient} /></ProtectedRoute>} />
-        <Route path="/notes" element={<ProtectedRoute><Notes isPatient={isPatient} /></ProtectedRoute>} />
-        <Route path="/export" element={<ProtectedRoute><ExportPatients /></ProtectedRoute>} />
-        {/* Admin-specific routes */}
-        {!isPatient && (
-          <>
-            <Route path="/writerecords" element={<ProtectedRoute><WriteRecords /></ProtectedRoute>} />
-            <Route path="/registerhealthpro" element={<ProtectedRoute><RegisterHealthPro /></ProtectedRoute>} />
-            
             <Route path="/register" element={<RegisterandLogout />} />
           </>
         )}

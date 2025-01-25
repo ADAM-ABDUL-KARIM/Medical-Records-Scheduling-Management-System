@@ -60,7 +60,7 @@ function SideMenu({ isPatient }) {
             <Link to="/analytics">Analytics</Link>
           </li>
           <li>
-            <Link to="http://127.0.0.1:8000/admin/">Admin Panel</Link>
+            <Link to="http://127.0.0.1:8000/admin/" target="_blank">Admin Panel</Link>
           </li>
         </ul>
       </div>

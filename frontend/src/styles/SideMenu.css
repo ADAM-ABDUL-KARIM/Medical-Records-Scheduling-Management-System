@@ -27,6 +27,7 @@
 
 .side-menu ul li a {
   color: azure;
+  font-weight: bold;
   text-decoration: none;
   display: block;
 }
