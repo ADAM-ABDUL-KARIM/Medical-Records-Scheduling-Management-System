@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "../styles/SideMenu.css";
 
-function SideMenu() {
-  const [isOpen, setIsOpen] = useState(true);
+function SideMenu({ isPatient }) {
+  const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
   const toggleMenu = () => {
@@ -23,6 +23,11 @@ function SideMenu() {
     };
   }, []);
 
+  // If the user is a patient, do not render the SideMenu
+  if (isPatient) {
+    return null;
+  }
+
   return (
     <div>
       <div ref={menuRef} className={`side-menu ${isOpen ? "open" : ""}`}>
@@ -37,10 +42,8 @@ function SideMenu() {
             <Link to="/viewrecords">View Records</Link>
           </li>
           <li>
-            <Link to="/registerhealthpro">
-              Register Healthcare Professional
-            </Link>
-          </li>      
+            <Link to="/registerhealthpro">Register Healthcare Professional</Link>
+          </li>
           <li>
             <Link to="/appointments">Appointments</Link>
           </li>
@@ -52,6 +55,12 @@ function SideMenu() {
           </li>
           <li>
             <Link to="/export">Export Patients</Link>
+          </li>
+          <li>
+            <Link to="/analytics">Analytics</Link>
+          </li>
+          <li>
+            <Link to="http://127.0.0.1:8000/admin/">Admin Panel</Link>
           </li>
         </ul>
       </div>

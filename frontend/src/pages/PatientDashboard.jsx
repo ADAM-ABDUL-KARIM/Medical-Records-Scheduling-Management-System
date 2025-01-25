@@ -6,8 +6,7 @@ import patientList from "../assets/patient_list.png";
 import appointmentIcon from "../assets/appointmentIcon.png";
 import availability from "../assets/availability.png";
 import NotesPng from "../assets/NotesPng.png";
-
-
+import Export from "../assets/Export.png";
 function PatientDashboard() {
   const [username, setUsername] = useState("");
 
@@ -76,8 +75,18 @@ function PatientDashboard() {
             <span className="hiddenContainer">Notes</span>
           </Link>
         </div>
+        <div>
+          <Link to="/export">
+            <img
+              src={Export}
+              alt="Notes"
+              width={150}
+              height={150}
+            />
+            <span className="hiddenContainer">Export</span>
+          </Link>
+        </div>
       </div>
-   
     </div>
   );
 }

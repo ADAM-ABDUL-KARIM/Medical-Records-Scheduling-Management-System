@@ -8,6 +8,7 @@ import writeRecord from "../assets/writeRecord.png";
 import appointmentIcon from "../assets/appointmentIcon.png";
 import availability from "../assets/availability.png";
 import Export from "../assets/Export.png";
+import analyitcs from "../assets/analyitcs.png";
 
 import adminpanel from "../assets/adminpanel.png";
 
@@ -98,11 +99,19 @@ function Home() {
           </Link>
         </div>
         <div>
+          <Link to="/analytics">
+            <img src={analyitcs} alt="Analytics" width={150} height={150} />
+            <span className="hiddenContainer">Analytics</span>
+          </Link>
+        </div>
+        <div>
           <Link to="http://127.0.0.1:8000/admin/">
             <img src={adminpanel} alt="Admin Panel" width={150} height={150} />
             <span className="hiddenContainer">Admin Panel</span>
           </Link>
         </div>
+
+        
       </div>
     </div>
   );

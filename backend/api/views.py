@@ -12,6 +12,7 @@ from reportlab.pdfgen import canvas
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.http import JsonResponse
 
 class HealthcareProfessionalRetrieve(generics.ListCreateAPIView):
     serializer_class = HealthCareProfessionalSerializer
@@ -238,3 +239,19 @@ def export_patient_pdf(request, pk):
     p.showPage()
     p.save()
     return response
+
+
+
+
+
+def analytics_view(request):
+    total_patients = Patient.objects.count()
+    recovered_patients = Patient.objects.filter(is_recovered=True).count()
+    not_recovered_patients = total_patients - recovered_patients
+
+    data = {
+        "total_patients": total_patients,
+        "recovered_patients": recovered_patients,
+        "not_recovered_patients": not_recovered_patients,
+    }
+    return JsonResponse(data)

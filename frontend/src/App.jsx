@@ -16,49 +16,57 @@ import ExportPatients from "./pages/ExportPatients";
 import PatientDashboard from "./pages/PatientDashboard"; 
 import ProfileIcon from "./components/ProfileIcon"; 
 import api from "./api";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 
 function Logout() {
   localStorage.clear();
+  window.location.reload();
+  sessionStorage.clear();// Clear session storage 
   return <Navigate to="/login/" />;
 }
 
 function RegisterandLogout() {
   localStorage.clear();
+  window.location.reload();
   return <Register />;
 }
 
 function AppContent() {
   const location = useLocation();
   const [isPatient, setIsPatient] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getUserRole();
-  }, []);
+  }, [location.pathname]);// Re-fetch roles when the route changes
 
-  const getUserRole = () => {
-    api
-      .get("/api/username/")
-      .then((res) => res.data)
-      .then((data) => {
-        setIsPatient(data.is_patient);
-        setLoading(false); // Set loading to false after getting the user role
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false); // Set loading to false even if there's an error
-      });
+  const getUserRole = async () => {
+    try {
+      const res = await api.get("/api/username/");
+      const data = res.data;
+      setIsPatient(data.is_patient);
+      setIsAdmin(data.is_admin);
+      setLoading(false); // Set loading to false after getting the user role
+    } catch (error) {
+      console.error(error);
+      setLoading(false); // Set loading to false even if there's an error
+    }
   };
 
   const hideSideMenu = 
+    isPatient ||
     location.pathname === "/login/" || 
     location.pathname === "/register" || 
     location.pathname === "/register/" || 
     location.pathname === "/login" || 
-    location.pathname === "/" || 
-    (isPatient && ["/viewrecords", "/appointments", "/availability","/notes"].includes(location.pathname));
+    location.pathname === "/";
 
-  const hideProfileIcon = location.pathname === "/login/" || location.pathname === "/register" || location.pathname === "/register/" || location.pathname === "/login";
+  const hideProfileIcon = 
+    location.pathname === "/login/" || 
+    location.pathname === "/register" || 
+    location.pathname === "/register/" || 
+    location.pathname === "/login";
 
   if (loading) {
     return <div>Loading...</div>; // Show a loading indicator while fetching the user role
@@ -66,28 +74,52 @@ function AppContent() {
 
   return (
     <>
-      {!hideSideMenu && <SideMenu />}
+      {!hideSideMenu && <SideMenu isPatient={isPatient} />}
       {!hideProfileIcon && <ProfileIcon isPatient={isPatient} />} 
       <Routes>
         <Route
           path="/"
           element={
             <ProtectedRoute>
-              {isPatient ? <PatientDashboard /> : <Home />}
+              <Home />
             </ProtectedRoute>
           }
         />
-        <Route path="/registerhealthpro" element={<RegisterHealthPro />} />
-        <Route path="/notes" element={<Notes isPatient={isPatient} />} />
-        <Route path="/availability" element={<HealthCareAvailability isPatient={isPatient} />} />
-        <Route path="/appointments" element={<Appointments isPatient={isPatient} />} />
-        <Route path="/viewrecords" element={<ViewPatientRecords isPatient={isPatient} />} />
-        <Route path="/export" element={<ExportPatients />} />
-        <Route path="/WriteRecords" element={<WriteRecords />} />
+        <Route
+          path="/patient-dashboard"
+          element={
+            <ProtectedRoute>
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute>
+              <AnalyticsDashboard />
+            </ProtectedRoute>
+          }
+        />
+        {/* Patient-specific routes */}
+        <Route path="/appointments" element={<ProtectedRoute><Appointments isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/viewrecords" element={<ProtectedRoute><ViewPatientRecords isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/availability" element={<ProtectedRoute><HealthCareAvailability isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/notes" element={<ProtectedRoute><Notes isPatient={isPatient} /></ProtectedRoute>} />
+        <Route path="/export" element={<ProtectedRoute><ExportPatients /></ProtectedRoute>} />
+        {/* Admin-specific routes */}
+        {!isPatient && (
+          <>
+            <Route path="/writerecords" element={<ProtectedRoute><WriteRecords /></ProtectedRoute>} />
+            <Route path="/registerhealthpro" element={<ProtectedRoute><RegisterHealthPro /></ProtectedRoute>} />
+            
+            <Route path="/register" element={<RegisterandLogout />} />
+          </>
+        )}
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/register" element={<RegisterandLogout />} />
-        <Route path="*" element={<NotFound />}></Route>
+        
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

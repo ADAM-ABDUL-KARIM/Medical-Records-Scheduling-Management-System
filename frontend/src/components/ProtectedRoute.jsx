@@ -1,7 +1,4 @@
-// this will represent a wrapper for a protected route - as we need an authorization token to access this route
-
 import { Navigate } from "react-router-dom";
-
 import jwtDecode from "jwt-decode";
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
@@ -9,20 +6,17 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 function ProtectedRoute({ children }) {
-  // first step to check if authorized to access this route-otherwise log in before using this
-  // state hook
   const [isAuthorized, setIsAuthorized] = useState(null);
+  const [isPatient, setIsPatient] = useState(false);
 
   useEffect(() => {
     auth().catch(() => setIsAuthorized(false));
-  }, []);
+  }, );
 
   const refreshToken = async () => {
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
 
     try {
-      // send it to the backend
-      // refresh is payload
       const res = await api.post("/api/token/refresh/", {
         refresh: refreshToken,
       });
@@ -45,10 +39,9 @@ function ProtectedRoute({ children }) {
       setIsAuthorized(false);
       return;
     }
-    // give access to the value and expiration date
+
     const decoded = jwtDecode(token);
     const tokenExpiration = decoded.exp;
-    // get the date in seconds not ms
     const now = Date.now() / 1000;
 
     if (tokenExpiration < now) {
@@ -56,12 +49,34 @@ function ProtectedRoute({ children }) {
     } else {
       setIsAuthorized(true);
     }
+
+    try {
+      const res = await api.get("/api/username/");
+      setIsPatient(res.data.is_patient);
+    } catch (error) {
+      console.log(error);
+      setIsAuthorized(false);
+    }
   };
 
   if (isAuthorized === null) {
     return <div>Loading...</div>;
   }
-  return isAuthorized ? children : <Navigate to="/login" />;
+
+  if (!isAuthorized) {
+    return <Navigate to="/login" />;
+  }
+
+  if (isAuthorized && isPatient && window.location.pathname === "/") {
+    
+    return <Navigate to="/patient-dashboard" />;
+  }
+
+  return children;
 }
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default ProtectedRoute;
