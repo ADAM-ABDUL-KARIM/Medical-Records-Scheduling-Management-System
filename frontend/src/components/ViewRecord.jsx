@@ -193,6 +193,7 @@ function ViewRecord({ Record, onDelete, onSave, isPatient }) {
               value={editedRecord.start_date}
               onChange={handleChange}
             />
+            
             <input
               className="rec-content"
               name="activity_level"
@@ -213,7 +214,7 @@ function ViewRecord({ Record, onDelete, onSave, isPatient }) {
                 }
               />
             </label>
-            <fieldset>
+            <fieldset className="viewFieldSet">
               <legend>Diagnosis</legend>
               {editedRecord.diagnosis.map((d, index) => (
                 <div key={index} className="dynamic-field">

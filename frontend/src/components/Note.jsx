@@ -25,7 +25,7 @@ function Note({ note, onDelete, isPatient }) {
   const formattedTime = new Date(note.note_date).toLocaleTimeString("en-US", {
     hour: '2-digit',
     minute: '2-digit',
-    second: '2-digit',
+
   });
   const formatAPP = new Date(note.appointment_details.appointment_datetime).toLocaleDateString("en-US", {
     weekday: 'long',
@@ -62,7 +62,7 @@ function Note({ note, onDelete, isPatient }) {
       </div>
       <div className={`note-details ${isExpanded ? "expanded" : ""}`} ref={detailsRef}>
         <p className="note-content">
-          <span>Appointment Date:</span> {note.appointment_details.appointment_datetime}
+          <span>Appointment Time:</span> {formatAPP} {formattedTime}
         </p>
         <p className="note-content">
           <span>Healthcare Professional:</span> {note.appointment_details.healthcare_professional_name}

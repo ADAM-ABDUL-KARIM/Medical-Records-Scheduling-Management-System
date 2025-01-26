@@ -27,9 +27,14 @@ function Notes({ isPatient }) {
     getNotes(page);
     if (!isPatient) {
       getPatients();
-      getAppointments();
     }
   }, [location.search, isPatient]);
+
+  useEffect(() => {
+    if (selectedPatient) {
+      getAppointments(selectedPatient);
+    }
+  }, [selectedPatient]);
 
   const getNotes = async (page) => {
     try {
@@ -52,9 +57,10 @@ function Notes({ isPatient }) {
       .catch((err) => alert(err));
   };
 
-  const getAppointments = () => {
+  const getAppointments = (patientId) => {
+// select app based on the patient file number ->pk 
     api
-      .get("/api/appointment/")
+      .get(`/api/appointment/?file_number=${patientId}`)
       .then((res) => res.data)
       .then((data) => {
         setAppointments(data);
@@ -112,8 +118,7 @@ function Notes({ isPatient }) {
   return (
     <div className="view-notes">
       {isPatient && <BackArrow />}
-      
-      <h1>Patient Notes</h1>
+      <h1>Notes</h1>
       {!isPatient && (
         <input
           type="text"
@@ -172,6 +177,7 @@ function Notes({ isPatient }) {
               required
               onChange={(e) => setSelectedAppointment(e.target.value)}
               value={selectedAppointment}
+              disabled={!selectedPatient}
             >
               <option value="">Select an appointment</option>
               {appointments.map((appointment) => (

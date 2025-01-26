@@ -2,13 +2,13 @@ import { useState } from "react";
 import api from "../api";
 
 function RegisterHealthPro() {
-  
   const [username, setUsername] = useState("defaultUsername");
   const [password, setPassword] = useState("defaultPassword");
   const [firstName, setFirstName] = useState("John");
   const [lastName, setLastName] = useState("Doe");
   const [dateOfBirth, setDateOfBirth] = useState("2000-01-01");
   const [specialty, setSpecialty] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const createHealthPro = async (e) => {
     e.preventDefault();
@@ -27,11 +27,16 @@ function RegisterHealthPro() {
         alert("Healthcare Professional Created Successfully!");
         resetForm();
       } else {
-        alert("Failed to Healthcare Professional. Please try again.");
+        alert("Failed to create Healthcare Professional. Please try again.");
       }
     } catch (error) {
+      if (error.response && error.response.data && error.response.data.user && error.response.data.user.username) {
+        setErrorMessage("A user with that username already exists.");
+        alert("A user with that username already exists");
+      } else {
+        setErrorMessage("An error occurred while creating the healthcare professional.");
+      }
       console.error("Error creating healthpro:", error.response.data);
-      alert("An error occurred while creating the healthpro.");
     }
   };
 
@@ -42,6 +47,7 @@ function RegisterHealthPro() {
     setLastName("Doe");
     setDateOfBirth("2000-01-01");
     setSpecialty("");
+    setErrorMessage("");
   };
 
   return (
@@ -49,7 +55,7 @@ function RegisterHealthPro() {
       <h2>Register a Healthcare Professional</h2>
 
       <form onSubmit={createHealthPro} className="write-records-form">
-        
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
         <fieldset>
           <legend>User Details</legend>
 
@@ -73,7 +79,7 @@ function RegisterHealthPro() {
         </fieldset>
 
         <fieldset>
-          <legend>Helthcare Professional Details</legend>
+          <legend>Healthcare Professional Details</legend>
 
           <label htmlFor="firstName">First Name:</label>
           <input
@@ -118,4 +124,5 @@ function RegisterHealthPro() {
     </div>
   );
 }
+
 export default RegisterHealthPro;

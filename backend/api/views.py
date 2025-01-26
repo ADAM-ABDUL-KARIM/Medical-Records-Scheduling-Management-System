@@ -44,6 +44,7 @@ class PatientUpdate(generics.UpdateAPIView):
     def get_queryset(self):
         return Patient.objects.all()
 
+
 class PatientDelete(generics.DestroyAPIView):
     serializer_class = PatientSerializer
     permission_classes = [AllowAny]
@@ -51,15 +52,37 @@ class PatientDelete(generics.DestroyAPIView):
     def get_queryset(self):
         return Patient.objects.all()
 
+    def perform_destroy(self, instance):
+        user = instance.user
+        instance.delete()
+        user.delete()
+# class PatientDelete(generics.DestroyAPIView):
+#     serializer_class = PatientSerializer
+#     permission_classes = [AllowAny]
+
+#     def get_queryset(self):
+#         return Patient.objects.all()
+
 class AppointmentCreate(generics.ListCreateAPIView):
     serializer_class = AppointmentSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny]  # Ensure only authenticated users access this
 
     def get_queryset(self):
         user = self.request.user
+        patient_id = self.request.query_params.get('file_number', None)
+
+        if patient_id:
+            return Appointment.objects.filter(patient__file_number=patient_id)
         if user.groups.filter(name='Patient').exists():
             return Appointment.objects.filter(patient__user=user)
         return Appointment.objects.all()
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            print(serializer.errors)
+        return super()
 
     def perform_create(self, serializer):
         if serializer.is_valid():

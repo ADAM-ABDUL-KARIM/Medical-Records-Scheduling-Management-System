@@ -1,3 +1,4 @@
+from time import localtime
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -31,7 +32,7 @@ class HealthCareProfessional(models.Model):
     dob = models.DateField()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} "
 
 class Patient(models.Model):
     file_number = models.AutoField(primary_key=True)
@@ -62,7 +63,9 @@ class Appointment(models.Model):
     appointment_datetime = models.DateTimeField()
 
     def __str__(self):
+    
         return f"Appointment on {self.appointment_datetime} with {self.healthcare_professional} and {self.patient}"
+        
 
 class AdminAppointment(models.Model):
     admin_appointment_id = models.AutoField(primary_key=True)

@@ -14,11 +14,12 @@ function Appointments({ isPatient }) {
   const [selectedAppointmentDateTime, setAppointmentDateTime] = useState("");
   const [availabilities, setAvailabilities] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(""); // "success" or "error"
 
   useEffect(() => {
     getPatients();
     getHealthPro();
-    
   }, []);
 
   const getPatients = () => {
@@ -29,7 +30,7 @@ function Appointments({ isPatient }) {
         setPatients(data);
         console.log(data);
       })
-      .catch((err) => alert(err));
+      .catch((err) => setMessage(`Error: ${err.message}`));
   };
 
   const getHealthPro = () => {
@@ -40,7 +41,7 @@ function Appointments({ isPatient }) {
         setHealthcareprofessional(data);
         console.log(data);
       })
-      .catch((err) => alert(err));
+      .catch((err) => setMessage(`Error: ${err.message}`));
   };
 
   const getAvailabilities = (healthproId) => {
@@ -51,18 +52,18 @@ function Appointments({ isPatient }) {
         setAvailabilities(data);
         console.log(data);
       })
-      .catch((err) => alert(err));
+      .catch((err) => setMessage(`Error: ${err.message}`));
   };
 
-  const getAppointments = (healthproId) => {
+  const getAppointments = () => {
     api
-      .get(`/api/appointment/?healthpro=${healthproId}`)
+      .get(`/api/appointment/`)
       .then((res) => res.data)
       .then((data) => {
         setAppointments(data);
         console.log(data);
       })
-      .catch((err) => alert(err));
+      .catch((err) => setMessage(`Error: ${err.message}`));
   };
 
   const createAppointment = (e) => {
@@ -78,7 +79,8 @@ function Appointments({ isPatient }) {
     });
 
     if (!isAfterStartDate) {
-      alert(
+      setMessageType("error");
+      setMessage(
         "The selected appointment date is before the start date of the healthcare professional's availability."
       );
       return;
@@ -103,7 +105,8 @@ function Appointments({ isPatient }) {
     });
 
     if (!isWithinAvailability) {
-      alert(
+      setMessageType("error");
+      setMessage(
         "The selected appointment time is not within the availability range of the healthcare professional."
       );
       return;
@@ -126,7 +129,8 @@ function Appointments({ isPatient }) {
     });
 
     if (hasConflict) {
-      alert(
+      setMessageType("error");
+      setMessage(
         "The selected appointment time conflicts with an existing appointment. Please pick a time at least 45 minutes after the conflicting appointment."
       );
       return;
@@ -139,15 +143,21 @@ function Appointments({ isPatient }) {
         appointment_datetime: selectedAppointmentDateTime,
       })
       .then((res) => {
-        if (res.status === 201) alert("Appointment Created");
-        else alert("Failed to create the appointment");
-        window.location.reload()
+        if (res.status === 201) {
+        alert("Success")
+          window.location.reload();
+
+        } else {
+          setMessageType("error");
+          setMessage("Failed to create the appointment.");
+        }
       })
       .catch((err) => {
+        setMessageType("error");
         if (err.response && err.response.data && err.response.data.detail) {
-          alert(err.response.data.detail);
+          setMessage(err.response.data.detail);
         } else {
-          alert("An error occurred while creating the appointment.");
+          setMessage("An error occurred while creating the appointment.");
         }
       });
   };
@@ -160,6 +170,9 @@ function Appointments({ isPatient }) {
         <div className="form-and-availability">
           <div className="form-container">
             <h2>Set an Appointment</h2>
+            {message && (
+              <p className={`message ${messageType}`}>{message}</p>
+            )}
             <form onSubmit={createAppointment}>
               <label htmlFor="patient">Patient</label>
               <select

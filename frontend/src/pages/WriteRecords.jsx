@@ -23,6 +23,8 @@ function WriteRecords() {
   const [diagnosis, setDiagnosis] = useState(["Default Diagnosis"]);
   const [medication, setMedication] = useState(["Default Medication"]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const createPatient = async (e) => {
     e.preventDefault();
     try {
@@ -56,8 +58,13 @@ function WriteRecords() {
         alert("Failed to create record. Please try again.");
       }
     } catch (error) {
+      if (error.response && error.response.data && error.response.data.user && error.response.data.user.username) {
+        setErrorMessage("A user with that username already exists.");
+        alert("A user with that username already exists");
+      } else {
+        setErrorMessage("An error occurred while creating the Patient .");
+      }
       console.error("Error creating patient:", error.response.data);
-      alert("An error occurred while creating the record.");
     }
   };
 
@@ -81,6 +88,7 @@ function WriteRecords() {
     setIsRecovered(false);
     setDiagnosis(["Default Diagnosis"]);
     setMedication(["Default Medication"]);
+    setErrorMessage("");
   };
 
   const addDiagnosisField = () => setDiagnosis([...diagnosis, ""]);
@@ -318,7 +326,7 @@ function WriteRecords() {
         </fieldset>
 
         {/* Diagnosis Fields */}
-        <fieldset>
+        <fieldset className="writeFieldset">
           <legend>Diagnosis</legend>
           {diagnosis.map((d, index) => (
             <div key={index} className="dynamic-field">
@@ -350,7 +358,7 @@ function WriteRecords() {
         </fieldset>
 
         {/* Medication Fields */}
-        <fieldset>
+        <fieldset className="writeFieldset">
           <legend>Medication</legend>
           {medication.map((m, index) => (
             <div key={index} className="dynamic-field">

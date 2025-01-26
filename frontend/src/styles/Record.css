@@ -48,6 +48,7 @@ h1 {
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 900px;
+  
 }
 .rec-container:hover .add-button {
   background-color: #44546a;
@@ -94,8 +95,9 @@ h1 {
 
 .rec-details.expanded {
   height: auto;
+  overflow-y: auto;
+  height: 400px;
 }
-
 .rec-content {
   margin: 5px 0;
   display: flex;
@@ -325,13 +327,26 @@ h1 {
   background-color: #ff4d4d;
   color: white;
   border: none;
+  
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
   margin-left: 10px;
 }
+ .writeFieldset .dynamic-field .remove-button {
+  width: 100px;
+}
+.writeFieldset  .dynamic-field  input[type="text"] {
+  
+  min-height: 40px;
+  padding: 8px;
+width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 
+  box-sizing: border-box;
+}
 .remove-button:hover {
   background-color: #ff1a1a;
 }

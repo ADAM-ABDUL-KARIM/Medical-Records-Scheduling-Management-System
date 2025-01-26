@@ -13,6 +13,7 @@ urlpatterns = [
     path("healthpro/<int:pk>/", views.HealthcareProfessionalRetrieve.as_view()),
     path("availability/", views.AvailabilityView.as_view()),
     path("appointment/", views.AppointmentCreate.as_view()),
+    path("appointment/<int:pk>/", views.AppointmentCreate.as_view()),
     path("appointment/delete/<int:pk>/", views.AppointmentDelete.as_view()),
     path('export/patient/excel/<int:pk>/', views.export_patients_excel, name='export-patient-excel'),
     path('export/patient/pdf/<int:pk>/', views.export_patient_pdf, name='export-patient-pdf'),
