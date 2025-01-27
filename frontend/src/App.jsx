@@ -20,8 +20,8 @@ import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 
 function Logout() {
   localStorage.clear();
-  window.location.reload();
-  sessionStorage.clear();// Clear session storage 
+  // window.location.reload();
+  sessionStorage.clear();// Clear session storage/cache to avoid unexpected behavior 
   return <Navigate to="/login/" />;
 }
 
@@ -107,7 +107,7 @@ function AppContent() {
             <Route path="/writerecords" element={<ProtectedRoute><WriteRecords /></ProtectedRoute>} />
             <Route path="/registerhealthpro" element={<ProtectedRoute><RegisterHealthPro /></ProtectedRoute>} />
             <Route path="/register" element={<RegisterandLogout />} />
-
+            
             <Route
           path="/analytics"
           element={

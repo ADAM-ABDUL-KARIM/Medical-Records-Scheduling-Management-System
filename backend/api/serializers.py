@@ -170,8 +170,9 @@ class AvailabilitySerializer(serializers.ModelSerializer):
         fields = ['availability_id', 'availability_date', 'end_time','healthcare_professional','healthpro_name']
     
     def get_healthpro_name(self, obj):
-        return f"{obj.healthcare_professional.first_name} {obj.healthcare_professional.last_name}",
-         
+        return {"healthcare_professional_name":f"{obj.healthcare_professional.first_name} {obj.healthcare_professional.last_name}",
+                "healthcare_professional_specialty":f"{obj.healthcare_professional.specialty}",
+         }
 
     def create(self, validated_data):
         availability = Availability.objects.create(**validated_data)

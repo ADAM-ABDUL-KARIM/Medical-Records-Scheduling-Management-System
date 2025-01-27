@@ -39,9 +39,9 @@ function ExportPatients({isPatient}) {
       const link = document.createElement("a");
       link.href = url;
       if(endpoint === "excel")
-      link.setAttribute("download", `${selectedPatient}.xlsx`);
+      link.setAttribute("download", `Patient_File Number_${selectedPatient}.xlsx`);
       else
-      link.setAttribute("download", `${selectedPatient}.pdf`);
+      link.setAttribute("download", `Patient_File Number_${selectedPatient}.pdf`);
       
       document.body.appendChild(link);
       link.click();

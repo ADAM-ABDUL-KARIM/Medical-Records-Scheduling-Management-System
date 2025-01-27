@@ -35,7 +35,10 @@ function Availability({ availability, onDelete, isPatient, showDeleteButton = tr
   return (
     <div className="availability-container">
       <p>
-        <span>Healthcare Professional Name:</span> {availability.healthpro_name}
+        <span>Healthcare Professional Name:</span> {availability.healthpro_name.healthcare_professional_name}
+      </p>
+      <p>
+        <span>Specialty:</span> {availability.healthpro_name.healthcare_professional_specialty}
       </p>
       <p>
         <span>Availability Start Time:</span>{" "}
@@ -44,6 +47,7 @@ function Availability({ availability, onDelete, isPatient, showDeleteButton = tr
       <p>
         <span>Availability End Time:</span> {availability.end_time}
       </p>
+      
       {!isPatient && showDeleteButton && (
         <button className="delete-button" onClick={handleDeleteClick}>
           Delete
