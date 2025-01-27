@@ -141,9 +141,9 @@ class ProfileView(generics.RetrieveAPIView):
     serializer_class = ProfileSerializer
     permission_classes = [AllowAny]
 
-    def get_object(self):
-        return self.request.user.profile
-
+    def get_queryset(self):
+        return Profile.objects.all()
+    
 class UsernameView(generics.RetrieveAPIView):
     permission_classes = [AllowAny]
 

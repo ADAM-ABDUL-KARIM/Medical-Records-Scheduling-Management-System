@@ -47,7 +47,8 @@ h1 {
   border-radius: 4px;
   padding: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 900px;
+  width: 1000px;
+  
   
 }
 .rec-container:hover .add-button {
@@ -59,6 +60,9 @@ h1 {
   color: whitesmoke;
 }
 .rec-container:hover .rec-title{
+  color: azure;
+}
+.rec-container:hover span{
   color: azure;
 }
 /* Header styles */
@@ -74,14 +78,29 @@ h1 {
   font-weight: bold;
   color: steelblue;
 }
-
-
+.rec-title span{
+  color: steelblue;
+  display: inline;
+  float: right;
+  margin-left:  20px;
+}
+.spandes{
+  margin-top: 10px;
+  width: 20px;
+  border-radius: 10px;
+  height: 5px;
+  
+  background-color: #44546a;
+  
+}
 .arrow {
   font-size: 18px;
 }
 
 /* Details styles */
 .rec-details {
+  
+  overflow: hidden;
   margin-top: 10px;
   padding: 1px;
   border-radius: 1%;
@@ -89,15 +108,15 @@ h1 {
   grid-template-columns: repeat(4, 1fr); /* Four columns */
   gap: 10px; /* Gap between grid items */
   height: 0;
-  overflow: hidden;
-  transition: height 0.3s ease;
+  transition: height 0.5s ease-in-out;
 }
 
 .rec-details.expanded {
   height: auto;
   overflow-y: auto;
-  height: 400px;
+  overflow-x: auto;
 }
+
 .rec-content {
   margin: 5px 0;
   display: flex;

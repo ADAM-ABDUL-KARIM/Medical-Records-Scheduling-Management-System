@@ -108,7 +108,7 @@ function ViewRecord({ Record, onDelete, onSave, isPatient }) {
     <div className="rec-container">
       <div className="rec-header" onClick={() => setIsExpanded(!isExpanded)}>
         <p className="rec-title">
-          {Record.first_name} {Record.last_name}
+          {Record.first_name} {Record.last_name}  <span> Start Date: {Record.start_date}</span>  <span>File Number: {Record.file_number}</span> <span className="spandes"></span>
         </p>
         <span className="arrow">{isExpanded ? "▲" : "▼"}</span>
       </div>

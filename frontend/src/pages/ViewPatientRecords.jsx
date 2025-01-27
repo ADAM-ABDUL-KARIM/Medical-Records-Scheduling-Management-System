@@ -66,7 +66,7 @@ function ViewPatientRecords({ isPatient }) {
   };
 
   const filteredPatients = patients.filter((patient) =>
-    `${patient.first_name} ${patient.last_name}`
+    `${patient.first_name} ${patient.last_name} ${patient.file_number}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
