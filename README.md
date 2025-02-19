@@ -34,4 +34,9 @@ python manage.py runserver
 ### Set up Front end
 cd ../frontend
 npm install
+
+Login Credentails:
+username:Adam
+Password:a
+All passwords are a
 npm run dev
