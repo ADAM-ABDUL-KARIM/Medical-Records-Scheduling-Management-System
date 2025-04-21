@@ -15,7 +15,7 @@ This project is a full-stack web application built with Django (backend) and Rea
 
 ### 1. Clone the repository
 ```sh
-git clone https://github.com/ADAM-ABDUL-KARIM/AdamCMPS272Project.git
+git clone https://github.com/ADAM-ABDUL-KARIM/Medical-Records-Scheduling-Management-System.git 
 
 ### 2. Setup backend
 
