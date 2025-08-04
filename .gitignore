@@ -52,3 +52,5 @@ node_modules/
 build/
 dist/
 *.egg-info/
+venv
+.venv/
