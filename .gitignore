@@ -47,7 +47,7 @@ local_settings.py
 
 # Node modules (if using Node.js)
 node_modules/
-
+.env   
 # Build artifacts
 build/
 dist/
