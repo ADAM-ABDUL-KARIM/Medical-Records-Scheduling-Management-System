@@ -11,9 +11,11 @@ import { ACCESS_TOKEN } from "./constants";
 // .create is a method that allows us to create a new instance of axios takes an object of options
 // baseurl is the url of the backend server
 // import.meta.env.VITE_API_URL is the url of the backend server
+
+const apiUrl= "https://b9cb6fc7-3d26-46f7-9fdd-bb7788fa4977-dev.e1-us-east-azure.choreoapis.dev/adam-medical-record-syste/backend/v1"
 const api = axios.create({
     // import everything specidied inside an envirometn variable file
-baseURL: import.meta.env.VITE_API_URL,
+baseURL: import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL :apiUrl  ,
 
     })
     // api.interceptors.request.use is a method that allows us to intercept the request before it is sent
