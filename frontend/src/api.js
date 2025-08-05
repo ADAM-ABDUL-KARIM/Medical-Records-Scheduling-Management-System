@@ -13,7 +13,7 @@ import { ACCESS_TOKEN } from "./constants";
 // import.meta.env.VITE_API_URL is the url of the backend server
 const api = axios.create({
     // import everything specidied inside an envirometn variable file
-baseURL: import.meta.env.VITE_API_URL,
+baseURL: `${import.meta.env.VITE_API_URL}`
 
     })
     // api.interceptors.request.use is a method that allows us to intercept the request before it is sent

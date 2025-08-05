@@ -1,0 +1,33 @@
+# Use a lightweight Python base image
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements.txt from the backend folder
+COPY backend/requirements.txt .
+
+# Install system dependencies for psycopg2 (PostgreSQL), not MySQL
+RUN apt-get update && apt-get install -y \
+    build-essential libpq-dev gcc \
+    && apt-get clean
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of your backend project
+COPY backend/ .
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE backend.settings
+
+# Collect static files (optional here if handled in a separate step)
+RUN python manage.py collectstatic --noinput
+
+# Expose port for Gunicorn
+EXPOSE 8000
+
+# Run the app using Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
