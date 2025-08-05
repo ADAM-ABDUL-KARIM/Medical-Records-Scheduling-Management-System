@@ -1,4 +1,4 @@
-# Medical Records Scheduling Management System
+# Medical Records Scheduling Management System (Containerized via Docker)
 ## Deployed on Choreo on Free Trial Mode: Front end link: https://2fd94cbd-e959-4df4-a8af-32360c792d0b.e1-us-east-azure.choreoapps.dev/
 ## Free Trial requires manual power on of the Data base. However, the Data base, back, and front end are connected components
 
