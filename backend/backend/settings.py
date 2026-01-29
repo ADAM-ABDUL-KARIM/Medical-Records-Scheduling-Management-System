@@ -128,7 +128,7 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
 else:
     CORS_ALLOWED_ORIGINS = [
-        "https://your-frontend-app.vercel.app",  # Update after deploying frontend
+        "https://medical-records-scheduling-management-system-dpp0k2psb.vercel.app/",  # Update after deploying frontend
         "http://localhost:5173",  # Keep for local testing
     ]
 ROOT_URLCONF = 'backend.urls'
