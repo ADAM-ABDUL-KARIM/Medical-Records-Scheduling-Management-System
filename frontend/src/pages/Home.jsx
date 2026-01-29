@@ -105,7 +105,7 @@ function Home() {
           </Link>
         </div>
         <div>
-          <Link to="https://medical-records-scheduling-manageme.vercel.app/admin/" target="_blank">
+          <Link to="https://medical-records-backend-fgfz.onrender.com/admin/login/?next=/admin" target="_blank">
             <img src={adminpanel} alt="Admin Panel" width={150} height={150} />
             <span className="hiddenContainer">Admin Panel</span>
           </Link>
