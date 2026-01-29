@@ -26,7 +26,7 @@ class HealthcareProfessionalRetrieve(generics.ListCreateAPIView):
 
 class PatientRetrieve(generics.ListCreateAPIView):
     serializer_class = PatientSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         user = self.request.user
@@ -39,7 +39,7 @@ class PatientRetrieve(generics.ListCreateAPIView):
 
 class PatientUpdate(generics.UpdateAPIView):
     serializer_class = PatientUpdateSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Patient.objects.all()
@@ -47,7 +47,7 @@ class PatientUpdate(generics.UpdateAPIView):
 
 class PatientDelete(generics.DestroyAPIView):
     serializer_class = PatientSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Patient.objects.all()
@@ -65,7 +65,7 @@ class PatientDelete(generics.DestroyAPIView):
 
 class AppointmentCreate(generics.ListCreateAPIView):
     serializer_class = AppointmentSerializer
-    permission_classes = [AllowAny]  # Ensure only authenticated users access this
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated users access this
 
     def get_queryset(self):
         user = self.request.user
@@ -77,12 +77,12 @@ class AppointmentCreate(generics.ListCreateAPIView):
             return Appointment.objects.filter(patient__user=user)
         return Appointment.objects.all()
 
-    def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            print(serializer.errors)
-        return super()
+    # def perform_create(self, serializer):
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #     else:
+    #         print(serializer.errors)
+    #     return super()
 
     def perform_create(self, serializer):
         if serializer.is_valid():
@@ -93,7 +93,7 @@ class AppointmentCreate(generics.ListCreateAPIView):
 
 class AppointmentDelete(generics.DestroyAPIView):
     serializer_class = AppointmentSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Appointment.objects.all()
@@ -110,7 +110,7 @@ class NoteListCreate(generics.ListCreateAPIView):
 
 class NoteDelete(generics.DestroyAPIView):
     serializer_class = NoteSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Note.objects.all()
@@ -118,7 +118,7 @@ class NoteDelete(generics.DestroyAPIView):
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         username = request.data.get('username')
@@ -139,19 +139,20 @@ class CreateUserView(generics.CreateAPIView):
 class ProfileView(generics.RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Profile.objects.all()
     
 class UsernameView(generics.RetrieveAPIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         if request.user.is_authenticated:
             is_patient = request.user.groups.filter(name='Patient').exists()
-            return Response({"username": request.user.username, "is_patient": is_patient})
-        return Response({"username": "Admin", "is_patient": False})
+            is_admin = request.user.is_staff or request.user.is_superuser  # Add this
+            return Response({"username": request.user.username, "is_patient": is_patient,"is_admin":is_admin})
+        return Response({"username": "Anonymous", "is_patient": False,"is_admin":False})
 
 class AvailabilityView(generics.ListCreateAPIView):
     serializer_class = AvailabilitySerializer
@@ -169,7 +170,7 @@ class AvailabilityView(generics.ListCreateAPIView):
 
 class AvailabilityDelete(generics.DestroyAPIView):
     serializer_class = AvailabilitySerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Availability.objects.all()

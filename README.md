@@ -42,7 +42,12 @@ npm run dev
 Login Credentails:
 username:Adam
 Password:a
-All passwords are a
+
+username:admin
+Password:admin
+
+
+or 
 
 
 ## Features

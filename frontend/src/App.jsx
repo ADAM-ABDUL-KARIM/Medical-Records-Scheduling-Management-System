@@ -42,17 +42,25 @@ function AppContent() {
   }, [location.pathname]);// Re-fetch roles when the route changes
 
   const getUserRole = async () => {
-    try {
-      const res = await api.get("/api/username/");
-      const data = res.data;
-      setIsPatient(data.is_patient);
-      setIsAdmin(data.is_admin);
-      setLoading(false); // Set loading to false after getting the user role
-    } catch (error) {
-      console.error(error);
-      setLoading(false); // Set loading to false even if there's an error
-    }
-  };
+  const token = localStorage.getItem("access_token");  // Check if token exists
+  
+  if (!token) {
+    // User not logged in yet, skip this call
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const res = await api.get("/api/username/");
+    const data = res.data;
+    setIsPatient(data.is_patient);
+    setIsAdmin(data.is_admin);
+    setLoading(false);
+  } catch (error) {
+    console.error(error);
+    setLoading(false);
+  }
+};
 
   const hideSideMenu = 
     isPatient ||

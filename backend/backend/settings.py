@@ -27,6 +27,30 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# Auto-detect environment and use appropriate database
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+
+if DATABASE_URL:
+    # Production (Render) - Uses PostgreSQL from DATABASE_URL
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    # Local Development - Uses SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -111,16 +135,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': os.getenv("DB_USER"),
-        'PASSWORD': os.getenv("DB_PWD"),
-        'HOST':os.getenv("DB_HOST") ,
-        'PORT': os.getenv("DB_PORT"),
-    }
-}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv("DB_NAME"),
+#         'USER': os.getenv("DB_USER"),
+#         'PASSWORD': os.getenv("DB_PWD"),
+#         'HOST':os.getenv("DB_HOST") ,
+#         'PORT': os.getenv("DB_PORT"),
+#     }
+# }
+
+
 
 
 # Password validation
