@@ -14,28 +14,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
 
-
-
-
-from django.http import JsonResponse
-from django.contrib.auth.models import User
-
-def create_initial_admin(request):
-    """Temporary endpoint to create admin - REMOVE AFTER USE"""
-    try:
-        if User.objects.filter(username='admin').exists():
-            return JsonResponse({'status': 'error', 'message': 'Admin already exists'})
-        
-        User.objects.create_superuser(
-            username='admin',
-            email='admin@example.com',
-            password='admin'  # Change this!
-        )
-        return JsonResponse({'status': 'success', 'message': 'Admin created successfully'})
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)})
-    
-    
 class HealthcareProfessionalRetrieve(generics.ListCreateAPIView):
     serializer_class = HealthCareProfessionalSerializer
     permission_classes = [AllowAny]
@@ -140,7 +118,7 @@ class NoteDelete(generics.DestroyAPIView):
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
         username = request.data.get('username')
