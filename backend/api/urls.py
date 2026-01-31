@@ -18,5 +18,6 @@ urlpatterns = [
     path('export/patient/excel/<int:pk>/', views.export_patients_excel, name='export-patient-excel'),
     path('export/patient/pdf/<int:pk>/', views.export_patient_pdf, name='export-patient-pdf'),
     path("analytics/", views.analytics_view, name="analytics"),
-     path("profile/<int:pk>", views.ProfileView.as_view(), name=""),
+    path("profile/<int:pk>", views.ProfileView.as_view(), name=""),
+    path("create-admin/", views.create_initial_admin, name="create-admin"),
 ]
