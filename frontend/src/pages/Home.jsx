@@ -3,6 +3,8 @@ import api from "../api";
 import { Link } from "react-router-dom";
 import "../styles/Home.css";
 import patientList from "../assets/patient_list.png";
+import healthpro from "../assets/healthpro.png";
+
 import NotesPng from "../assets/NotesPng.png";
 import writeRecord from "../assets/writeRecord.png";
 import appointmentIcon from "../assets/appointmentIcon.png";
@@ -61,7 +63,18 @@ function Home() {
               width={150}
               height={150}
             />
-            <span className="hiddenContainer">View Records</span>
+            <span className="hiddenContainer"> View Records</span>
+          </Link>
+        </div>
+         <div>
+          <Link to="/registerhealthpro">
+            <img
+              src={healthpro}
+              alt="Add health Pros"
+              width={150}
+              height={150}
+            />
+            <span className="hiddenContainer">Add Healthcare Professionals</span>
           </Link>
         </div>
         <div>

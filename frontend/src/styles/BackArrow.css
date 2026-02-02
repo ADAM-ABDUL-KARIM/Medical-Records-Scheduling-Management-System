@@ -1,6 +1,5 @@
 .back-arrow {
   position: fixed;
-  top: 20px;
   left: 20px;
   padding: 10px 20px;
   background-color: steelblue;
@@ -9,9 +8,17 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 10px;
   z-index: 1000;
-  transition: all 0.3s ease;
+}
+
+/* Default: top-left */
+.back-arrow.top {
+  top: 20px;
+}
+
+/* Home only: middle-left */
+.back-arrow.bottom {
+  visibility: hidden;
 }
 
 .back-arrow:hover {

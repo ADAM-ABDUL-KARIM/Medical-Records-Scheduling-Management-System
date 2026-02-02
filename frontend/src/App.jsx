@@ -101,10 +101,12 @@ function AppContent() {
       </div>
     );
   }
+  
+const isHome = location.pathname === "/" || location.pathname ==="/patient-dashboard";
 
   return (
     <>
-     
+       <BackArrow position={isHome ? "bottom" : "top"} />
       {/* {isPatient !== null && !hideSideMenu && <SideMenu isPatient={isPatient} />} */}
       {!hideProfileIcon && <ProfileIcon isPatient={isPatient} />} 
       <Routes>
@@ -113,7 +115,7 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Home />
-              <BackArrow/>
+              
             </ProtectedRoute>
           }
         />
