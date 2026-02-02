@@ -33,7 +33,7 @@ function RegisterandLogout() {
 
 function AppContent() {
   const location = useLocation();
-  const [isPatient, setIsPatient] = useState(false);
+  const [isPatient, setIsPatient] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -71,7 +71,7 @@ function AppContent() {
 
   // Determine if components should be hidden based on current route
   const hideSideMenu = 
-    isPatient ||
+    isPatient === null ||
     location.pathname === "/login/" || 
     location.pathname === "/register" || 
     location.pathname === "/register/" || 
@@ -102,7 +102,7 @@ function AppContent() {
 
   return (
     <>
-      {!hideSideMenu && <SideMenu isPatient={isPatient} />}
+      {isPatient !== null && !hideSideMenu && <SideMenu isPatient={isPatient} />}
       {!hideProfileIcon && <ProfileIcon isPatient={isPatient} />} 
       <Routes>
         <Route
