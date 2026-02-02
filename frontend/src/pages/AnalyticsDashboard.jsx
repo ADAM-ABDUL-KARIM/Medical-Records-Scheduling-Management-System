@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
-//import { Bar } from "react-chartjs-2";
-//import "chart.js/auto";
+import { Bar } from "react-chartjs-2";
+import "chart.js/auto";
 import "../styles/AnalyticDashboard.css"; // Import custom styles
 
 function AnalyticsDashboard() {

@@ -164,7 +164,7 @@ function Appointments({ isPatient }) {
 
   return (
     <div className="appointments-container">
-      {isPatient && <BackArrow />}
+      { <BackArrow />}
       <AppointmentsCalendar isPatient={isPatient} />
       {!isPatient && (
         <div className="form-and-availability">

@@ -9,7 +9,7 @@ import WriteRecords from "./pages/WriteRecords";
 import Appointments from "./pages/Appointments";
 import ViewPatientRecords from "./pages/ViewPatientRecords";
 import HealthCareAvailability from "./pages/HealthCareAvailability";
-import SideMenu from "./components/SideMenu";
+// import SideMenu from "./components/SideMenu";
 import Notes from "./pages/Notes";
 import RegisterHealthPro from "./pages/RegisterHealthPro";
 import ExportPatients from "./pages/ExportPatients";
@@ -17,6 +17,8 @@ import PatientDashboard from "./pages/PatientDashboard";
 import ProfileIcon from "./components/ProfileIcon"; 
 import api from "./api";
 import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import BackArrow from "./components/BackArrow";
+
 import { ACCESS_TOKEN } from "./constants";
 
 function Logout() {
@@ -70,13 +72,13 @@ function AppContent() {
   };
 
   // Determine if components should be hidden based on current route
-  const hideSideMenu = 
-    isPatient === null ||
-    location.pathname === "/login/" || 
-    location.pathname === "/register" || 
-    location.pathname === "/register/" || 
-    location.pathname === "/login" || 
-    location.pathname === "/";
+  // const hideSideMenu = 
+  //   isPatient === null ||
+  //   location.pathname === "/login/" || 
+  //   location.pathname === "/register" || 
+  //   location.pathname === "/register/" || 
+  //   location.pathname === "/login" || 
+  //   location.pathname === "/";
 
   const hideProfileIcon = 
     location.pathname === "/login/" || 
@@ -102,7 +104,8 @@ function AppContent() {
 
   return (
     <>
-      {isPatient !== null && !hideSideMenu && <SideMenu isPatient={isPatient} />}
+     
+      {/* {isPatient !== null && !hideSideMenu && <SideMenu isPatient={isPatient} />} */}
       {!hideProfileIcon && <ProfileIcon isPatient={isPatient} />} 
       <Routes>
         <Route
@@ -110,13 +113,14 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <Home />
+              <BackArrow/>
             </ProtectedRoute>
           }
         />
         <Route
           path="/patient-dashboard"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute >
               <PatientDashboard />
             </ProtectedRoute>
           }
@@ -168,7 +172,7 @@ function AppContent() {
         <Route 
           path="/writerecords" 
           element={
-            <ProtectedRoute>
+            <ProtectedRoute  allow={["admin"]}>
               <WriteRecords />
             </ProtectedRoute>
           } 
@@ -176,7 +180,7 @@ function AppContent() {
         <Route 
           path="/registerhealthpro" 
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allow={["admin"]} >
               <RegisterHealthPro />
             </ProtectedRoute>
           } 
