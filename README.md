@@ -39,7 +39,7 @@ npm run dev
 ************
 Login Credentails:
 
-username:Adam
+username:admin
 Password:admin
 
 
