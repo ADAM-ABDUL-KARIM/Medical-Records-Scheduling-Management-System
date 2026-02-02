@@ -6,9 +6,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_DB=meditracker
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
     ports:
       - "5432:5432"
 
@@ -20,9 +20,9 @@ services:
       - db
     environment:
       - DB_HOST=db
-      - DB_NAME=meditracker
-      - DB_USER=postgres
-      - DB_PWD=postgres
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PWD=${DB_PASSWORD}
       - DB_PORT=5432
     ports:
       - "8000:8000"
