@@ -1,11 +1,9 @@
-# Medical Records Scheduling Management System (Containerized via Docker)
-## Deployed on Choreo on Free Trial Mode: Front end link: https://2fd94cbd-e959-4df4-a8af-32360c792d0b.e1-us-east-azure.choreoapps.dev/
-## Free Trial requires manual power on of the Data base. However, the Data base, back, and front end are connected components
+# Medical Records Scheduling Management System
 
-# SWE Project
+
 
 ## Overview
-This project is a full-stack web application built with Django (backend) and React (frontend).
+This project is a full-stack web application built with Django (backend) and React (frontend) deployed on render and vercel.
 
 
 ## Prerequisites
@@ -21,7 +19,7 @@ git clone https://github.com/ADAM-ABDUL-KARIM/Medical-Records-Scheduling-Managem
 
 ### 2. Setup backend
 
-cd AdamCMPS272Project
+
 python -m venv env
 cd env
 Scripts/activate  
@@ -40,14 +38,9 @@ npm install
 npm run dev
 ************
 Login Credentails:
+
 username:Adam
-Password:a
-
-username:admin
 Password:admin
-
-
-or 
 
 
 ## Features
