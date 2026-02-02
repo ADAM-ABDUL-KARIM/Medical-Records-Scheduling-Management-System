@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/SideMenu.css";
 
 function SideMenu({ isPatient }) {
+  
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 

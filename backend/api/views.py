@@ -16,7 +16,7 @@ from django.http import JsonResponse
 
 class HealthcareProfessionalRetrieve(generics.ListCreateAPIView):
     serializer_class = HealthCareProfessionalSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return HealthCareProfessional.objects.all()
@@ -118,7 +118,7 @@ class NoteDelete(generics.DestroyAPIView):
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         username = request.data.get('username')
@@ -156,7 +156,7 @@ class UsernameView(generics.RetrieveAPIView):
 
 class AvailabilityView(generics.ListCreateAPIView):
     serializer_class = AvailabilitySerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         if serializer.is_valid():
