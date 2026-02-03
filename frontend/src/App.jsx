@@ -40,14 +40,16 @@ function AppContent() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Only fetch role if user is logged in
-    const token = localStorage.getItem(ACCESS_TOKEN);
-    if (token) {
-      getUserRole();
-    } else {
-      setLoading(false);
-    }
-  }, []); // Run once on mount
+  const token = localStorage.getItem(ACCESS_TOKEN);
+  if (token) {
+    setLoading(true);
+    getUserRole();
+  } else {
+    setIsPatient(null);
+    setIsAdmin(false);
+    setLoading(false);
+  }
+}, [location.pathname]);
 
   const getUserRole = async () => {
     try {
@@ -64,7 +66,7 @@ function AppContent() {
     } catch (error) {
       console.error("Error fetching user role:", error);
       // If there's an error, user might not be authenticated
-      setIsPatient(false);
+      setIsPatient(null);
       setIsAdmin(false);
     } finally {
       setLoading(false);
@@ -102,7 +104,10 @@ function AppContent() {
     );
   }
   
-const isHome = location.pathname === "/" || location.pathname ==="/patient-dashboard";
+const isHome = location.pathname === "/" || location.pathname ==="/patient-dashboard" || location.pathname === "/login/" || 
+    location.pathname === "/register" || 
+    location.pathname === "/register/" || 
+    location.pathname === "/login";
 
   return (
     <>

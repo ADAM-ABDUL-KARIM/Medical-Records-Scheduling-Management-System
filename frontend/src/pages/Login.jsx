@@ -16,7 +16,7 @@ function Login() {
         </p>
 
         </div>
-  <Form route="/api/token/" method="login" />;
+  <Form route="/api/token/" method="login" />
 
   </>
   );
